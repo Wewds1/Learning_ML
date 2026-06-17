@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30-Day ML/AI Engineering Roadmap</title>
+<style>
+:root {
+  --bg: #0E0E10;
+  --bg-card: #16161A;
+  --bg-section: #1C1C21;
+  --border: #2A2A32;
+  --border-light: #32323C;
+  --accent: #6C63FF;
+  --accent-2: #00D4AA;
+  --accent-3: #FF6B6B;
+  --accent-4: #FFB347;
+  --text-primary: #F0EFF5;
+  --text-secondary: #9998B0;
+  --text-muted: #5C5B6E;
+  --tag-bg: #22222A;
+  --pill-active-bg: #6C63FF;
+  --pill-active-text: #ffffff;
+
+  --phase-prodml-bg: #1A1730; --phase-prodml-color: #A89BFF;
+  --phase-classical-bg: #0F1F18; --phase-classical-color: #5EDBA8;
+  --phase-sql-bg: #1F1608; --phase-sql-color: #FFB347;
+  --phase-deep-bg: #1A0E20; --phase-deep-color: #D48EFF;
+  --phase-nlp-bg: #1F0E0E; --phase-nlp-color: #FF8A80;
+  --phase-llm-bg: #1A0F16; --phase-llm-color: #FF80AB;
+  --phase-rag-bg: #0A1A16; --phase-rag-color: #40E0B0;
+  --phase-rl-bg: #1A0A0A; --phase-rl-color: #FF6B6B;
+  --phase-mlops-bg: #141418; --phase-mlops-color: #B0B0CC;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── HEADER ── */
+.header {
+  padding: 3rem 2rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #12111A 0%, var(--bg) 100%);
+}
+.header-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+.header-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+.header-title span { color: var(--accent); }
+.header-sub {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 640px;
+  margin-bottom: 2rem;
+}
+
+.stats {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.stat {
+  background: var(--bg-section);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  min-width: 100px;
+}
+.stat-val { font-size: 1.6rem; font-weight: 700; color: var(--text-primary); }
+.stat-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+/* ── CONTROLS ── */
+.controls-wrap {
+  padding: 1.25rem 2rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.controls { display: flex; flex-wrap: wrap; gap: 6px; }
+.pill {
+  font-size: 12px;
+  padding: 5px 13px;
+  border-radius: 99px;
+  border: 1px solid var(--border-light);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+.pill:hover { border-color: var(--accent); color: var(--accent); }
+.pill.active { background: var(--pill-active-bg); color: var(--pill-active-text); border-color: var(--pill-active-bg); }
+
+/* ── GRID ── */
+.grid-wrap { padding: 2rem; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.card:hover { border-color: var(--border-light); box-shadow: 0 4px 24px rgba(108,99,255,0.08); }
+.card.expanded { border-color: var(--accent); }
+
+.card-header { display: flex; align-items: flex-start; gap: 10px; }
+.day-num { font-size: 11px; font-weight: 600; color: var(--text-muted); min-width: 36px; letter-spacing: 0.05em; padding-top: 2px; }
+.card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); line-height: 1.4; flex: 1; }
+
+.badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.phase-badge, .artifact-badge, .diff-badge {
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.diff-badge { background: var(--tag-bg); color: var(--text-muted); }
+
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: var(--tag-bg);
+  color: var(--text-muted);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
+.chevron { font-size: 16px; margin-left: auto; color: var(--text-muted); transition: transform 0.2s; flex-shrink: 0; padding-top: 1px; }
+.card.expanded .chevron { transform: rotate(180deg); color: var(--accent); }
+
+/* ── DETAILS ── */
+.details {
+  display: none;
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+.card.expanded .details { display: block; }
+
+.section-block {
+  margin-bottom: 18px;
+}
+.section-block:last-child { margin-bottom: 0; }
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.section-label::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.section-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.objectives-list, .reflection-list, .readme-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.objectives-list li, .reflection-list li, .readme-list li {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+.objectives-list li::before { content: '→'; color: var(--accent-2); flex-shrink: 0; font-weight: 600; }
+.reflection-list li::before { content: '?'; color: var(--accent-4); flex-shrink: 0; font-weight: 700; font-style: italic; }
+.readme-list li::before { content: '◆'; color: var(--accent); flex-shrink: 0; font-size: 9px; margin-top: 3px; }
+
+.steps-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  counter-reset: steps;
+}
+.steps-list li {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  counter-increment: steps;
+}
+.steps-list li::before {
+  content: counter(steps);
+  background: var(--bg-section);
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.challenge-box {
+  background: linear-gradient(135deg, #1A1730 0%, #0F1A20 100%);
+  border: 1px solid #2A2A50;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.challenge-box strong { color: var(--accent); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+
+.deliverables-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.deliverable-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.deliverable-item::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  flex-shrink: 0;
+}
+
+.resources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.resource-item {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.resource-type {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--tag-bg);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dataset-box {
+  background: var(--bg-section);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.dataset-box .ds-name { font-weight: 600; color: var(--text-primary); margin-bottom: 4px; font-size: 13px; }
+.dataset-box .ds-source { color: var(--accent-2); font-size: 11px; margin-bottom: 4px; }
+.dataset-box .ds-desc { line-height: 1.5; }
+
+.code-note {
+  background: #0D1117;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11.5px;
+  color: #79B8FF;
+  margin-top: 8px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.success-criteria {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.criteria-item {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.criteria-item::before { content: '✓'; color: var(--accent-2); font-weight: 700; flex-shrink: 0; }
+
+.milestone-box {
+  background: linear-gradient(135deg, #0F1F18 0%, #1A1730 100%);
+  border: 1px solid #2A3A30;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.milestone-box strong { color: var(--accent-2); display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+
+.skill-integration {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.skill-pill {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: #1A1A28;
+  border: 1px solid #2A2A44;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.hidden { display: none !important; }
+
+/* Progress bar */
+.progress-bar-wrap { margin-top: 1rem; }
+.progress-bar-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+.progress-bar { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 99px; transition: width 0.4s; }
+
+/* Capstone banner */
+.capstone-banner {
+  margin: 0 2rem 2rem;
+  background: linear-gradient(135deg, #1A1730 0%, #0F1A18 50%, #1A0F16 100%);
+  border: 1px solid #3A3060;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+.capstone-banner h3 { font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+.capstone-banner p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.capstone-phases { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.capstone-phase { font-size: 11px; padding: 3px 10px; border-radius: 5px; background: rgba(108,99,255,0.15); color: var(--accent); border: 1px solid rgba(108,99,255,0.25); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Guided Learning Program · Production-Oriented</div>
+  <h1 class="header-title">30-Day <span>ML/AI Engineering</span> Roadmap</h1>
+  <p class="header-sub">A hands-on, production-oriented learning program covering Machine Learning, Data Science, MLOps, SQL, Power BI, and AI Engineering. ~2–3 hours of focused work per day.</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-val">30</div><div class="stat-lbl">Days</div></div>
+    <div class="stat"><div class="stat-val">9</div><div class="stat-lbl">Phases</div></div>
+    <div class="stat"><div class="stat-val">30</div><div class="stat-lbl">Datasets</div></div>
+    <div class="stat"><div class="stat-val">13</div><div class="stat-lbl">Sections/day</div></div>
+    <div class="stat"><div class="stat-val">1</div><div class="stat-lbl">Capstone</div></div>
+  </div>
+</div>
+
+<div class="controls-wrap">
+  <div class="controls" id="filters">
+    <button class="pill active" data-filter="all">All phases</button>
+    <button class="pill" data-filter="prod-ml">Production ML</button>
+    <button class="pill" data-filter="classical">Classical ML</button>
+    <button class="pill" data-filter="sql">SQL / Data eng</button>
+    <button class="pill" data-filter="deep">Deep learning</button>
+    <button class="pill" data-filter="nlp">NLP</button>
+    <button class="pill" data-filter="llm">Transformers / LLMs</button>
+    <button class="pill" data-filter="rag">RAG</button>
+    <button class="pill" data-filter="rl">RL</button>
+    <button class="pill" data-filter="mlops">MLOps</button>
+  </div>
+</div>
+
+<div class="grid-wrap">
+<div class="capstone-banner">
+  <h3>🏁 Capstone Project (Days 28–30 + final submission)</h3>
+  <p>Your final capstone integrates all skills into a production-grade ML system: data collection → SQL feature engineering → EDA → model development → experiment tracking → explainability → FastAPI + Docker deployment → Power BI dashboard → production monitoring. Each day's work is a building block toward this deliverable.</p>
+  <div class="capstone-phases">
+    <span class="capstone-phase">Data Collection</span>
+    <span class="capstone-phase">SQL Feature Eng.</span>
+    <span class="capstone-phase">EDA</span>
+    <span class="capstone-phase">ML Modeling</span>
+    <span class="capstone-phase">MLflow Tracking</span>
+    <span class="capstone-phase">SHAP Explainability</span>
+    <span class="capstone-phase">FastAPI Endpoint</span>
+    <span class="capstone-phase">Docker</span>
+    <span class="capstone-phase">Power BI Dashboard</span>
+    <span class="capstone-phase">Drift Monitoring</span>
+  </div>
+</div>
+<div class="grid" id="grid"></div>
+</div>
+
+<script>
+const PHASE_COLORS = {
+  'prod-ml':  { bg:'var(--phase-prodml-bg)', color:'var(--phase-prodml-color)' },
+  'classical':{ bg:'var(--phase-classical-bg)', color:'var(--phase-classical-color)' },
+  'sql':      { bg:'var(--phase-sql-bg)', color:'var(--phase-sql-color)' },
+  'deep':     { bg:'var(--phase-deep-bg)', color:'var(--phase-deep-color)' },
+  'nlp':      { bg:'var(--phase-nlp-bg)', color:'var(--phase-nlp-color)' },
+  'llm':      { bg:'var(--phase-llm-bg)', color:'var(--phase-llm-color)' },
+  'rag':      { bg:'var(--phase-rag-bg)', color:'var(--phase-rag-color)' },
+  'rl':       { bg:'var(--phase-rl-bg)', color:'var(--phase-rl-color)' },
+  'mlops':    { bg:'var(--phase-mlops-bg)', color:'var(--phase-mlops-color)' },
+};
+const PHASE_LABELS = {
+  'prod-ml':'Production ML','classical':'Classical ML','sql':'SQL / Data eng',
+  'deep':'Deep learning','nlp':'NLP','llm':'Transformers / LLMs',
+  'rag':'RAG','rl':'RL','mlops':'MLOps'
+};
+const ARTIFACT_COLORS = {
+  'tabular': { bg:'var(--phase-classical-bg)', color:'var(--phase-classical-color)' },
+  'sql':     { bg:'var(--phase-sql-bg)', color:'var(--phase-sql-color)' },
+  'text':    { bg:'var(--phase-llm-bg)', color:'var(--phase-llm-color)' },
+  'rl-env':  { bg:'var(--phase-rl-bg)', color:'var(--phase-rl-color)' },
+  'powerbi': { bg:'var(--phase-prodml-bg)', color:'var(--phase-prodml-color)' },
+  'api':     { bg:'var(--phase-mlops-bg)', color:'var(--phase-mlops-color)' },
+};
+const ARTIFACT_LABELS = {
+  'tabular':'Tabular dataset','sql':'SQL tables','text':'Text corpus',
+  'rl-env':'RL environment','powerbi':'Power BI','api':'API + Docker'
+};
+
+const days = [
+  {
+    day:1, phase:'prod-ml', theme:'Encoding & Scaling Foundations', artifact:'tabular', difficulty:'Beginner',
+    concepts:['OneHotEncoder','LabelEncoder','OrdinalEncoder','StandardScaler','MinMaxScaler','RobustScaler','preprocessing leakage','train-test contamination'],
+    objectives:[
+      'Understand when to use ordinal vs nominal encoding and the consequences of choosing wrong',
+      'Explain why fitting scalers on the full dataset introduces data leakage',
+      'Apply three different scaling strategies and observe their effect on model performance',
+      'Recognize preprocessing leakage as one of the most common silent errors in ML workflows'
+    ],
+    coreConcepts:'Encoding transforms categorical text into numbers models can process. OrdinalEncoder encodes categories as ordered integers (e.g. Low=0, Med=1, High=2), which only makes sense when that order is real. OneHotEncoder creates a separate binary column per category — no false ordering. LabelEncoder is for target columns only. Scaling brings numeric features to a comparable range: StandardScaler subtracts mean and divides by std (outputs z-scores), MinMaxScaler compresses to [0,1], RobustScaler uses median and IQR making it resistant to outliers. Preprocessing leakage happens when you fit a scaler or encoder on the entire dataset before splitting — the transformer "sees" test data statistics, making your evaluation optimistic. Always fit on X_train only, then transform both X_train and X_test.',
+    activities:[
+      'Load the synthetic retail dataset; inspect dtypes, value_counts for each categorical column',
+      'Apply OrdinalEncoder to "size" (S/M/L/XL) and OneHotEncoder to "product_category"; explain your choice',
+      'Fit StandardScaler on full dataset (leaky), then correctly on X_train only; compare AUC difference',
+      'Apply MinMaxScaler and RobustScaler to a column containing outliers; plot the distributions',
+      'Write a data preparation function that returns a dict of fitted transformers for later reuse'
+    ],
+    challenge:'You are given a raw retail CSV with 5 categorical columns of mixed types and 4 numeric columns with heavy outliers. Produce a clean, encoded, scaled training-ready DataFrame. Document every encoding decision with a one-line justification. Measure and record the AUC gap caused by leaky vs non-leaky preprocessing.',
+    reflection:[
+      'Why is it wrong to apply StandardScaler before splitting the dataset? What statistical information leaks?',
+      'When would using LabelEncoder on a feature column (not a target) cause a model to learn incorrectly?',
+      'If a categorical column has 200 unique values, why might OneHotEncoding hurt your model?',
+      'Under what conditions would RobustScaler be the clear choice over StandardScaler?',
+      'What happens to a MinMaxScaler fitted on training data when a test sample contains a value outside the training range?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Docs', text:'scikit-learn Preprocessing Guide — sklearn.preprocessing'},
+      {type:'Article', text:'\"Data Leakage in Machine Learning\" – Towards Data Science'},
+      {type:'Video', text:'StatQuest: Feature Scaling — StanfordMLTV'},
+      {type:'Book', text:'Hands-On ML with Scikit-Learn (Géron) — Chapter 2'},
+      {type:'Repo', text:'feature-engine library — GitHub: feature-engine/feature_engine'}
+    ],
+    dataset:{name:'Synthetic Retail Transactions', source:'Synthetic (Python)',
+      desc:'1,000 rows: customer_age, annual_income, purchase_amount, product_category (5 classes), size (S/M/L/XL), region, is_returned (target). Heavy outliers in income.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(42)\nn=1000\ndf=pd.DataFrame({"customer_age":np.random.randint(18,75,n),"annual_income":np.concatenate([np.random.normal(60000,15000,950),np.random.normal(250000,30000,50)]),"purchase_amount":np.random.exponential(80,n),"product_category":np.random.choice(["Electronics","Clothing","Food","Books","Sports"],n),"size":np.random.choice(["S","M","L","XL"],n,p=[0.2,0.35,0.3,0.15]),"region":np.random.choice(["North","South","East","West"],n),"is_returned":np.random.binomial(1,0.15,n)})\ndf.to_csv("day01_retail.csv",index=False)'},
+    deliverables:['Jupyter notebook: day01_encoding_scaling.ipynb','Fitted scaler objects saved as .joblib files','Markdown cell documenting every encoding decision','AUC comparison table: leaky vs non-leaky preprocessing'],
+    readmeQuestions:[
+      'What encoding did you choose for each column, and why?',
+      'How large was the AUC inflation from leaky preprocessing?',
+      'What would break at inference time if you forgot to save the fitted scaler?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn','Git'],
+    successCriteria:[
+      'Can explain in one sentence why each encoding was chosen',
+      'Demonstrated AUC gap between leaky and non-leaky preprocessing',
+      'All transformers fitted on X_train only',
+      'Notebook is reproducible from top to bottom'
+    ]
+  },
+  {
+    day:2, phase:'prod-ml', theme:'Imputation Strategies & Missing Data', artifact:'tabular', difficulty:'Beginner',
+    concepts:['SimpleImputer','KNNImputer','IterativeImputer','MICE intuition','MCAR vs MAR vs MNAR','missingness indicator columns','masking patterns'],
+    objectives:[
+      'Distinguish between MCAR, MAR, and MNAR and explain why the distinction matters for imputation strategy',
+      'Implement three imputation strategies and measure their downstream model impact',
+      'Add missingness indicator columns and understand when they carry predictive signal',
+      'Recognize that the act of imputation itself communicates assumptions about data generating process'
+    ],
+    coreConcepts:'Missing data is not random noise — it has structure. MCAR (Missing Completely At Random) means the probability of missingness is independent of any variable. MAR (Missing At Random) means it depends on observed variables. MNAR (Missing Not At Random) means it depends on the missing value itself — the hardest case. SimpleImputer fills with mean/median/mode — fast but destroys relationships. KNNImputer finds k similar rows and averages their values — better for correlated features. IterativeImputer (MICE) models each feature with missing values as a function of all others, cycling through until convergence — most powerful but slowest. Always add a binary indicator column before imputing: "income_was_missing" may be the most predictive feature in your dataset.',
+    activities:[
+      'Load the health dataset; compute a missing data heatmap using seaborn or missingno library',
+      'Classify each column\'s missingness type (MCAR/MAR/MNAR) based on correlation analysis',
+      'Apply SimpleImputer, KNNImputer, and IterativeImputer; store all three versions',
+      'Train a LogisticRegression on each version; compare AUC and F1 scores in a DataFrame',
+      'Add missingness indicator columns before imputing; re-train and compare improvement'
+    ],
+    challenge:'You receive a medical dataset with 30% missing values across 6 columns. Investigate the missingness pattern. Propose and justify an imputation strategy. Demonstrate that your strategy outperforms mean imputation on a downstream classification task. Show that the missingness indicator columns carry signal by checking feature importances.',
+    reflection:[
+      'Why does imputing with the mean potentially make a model overconfident in its predictions?',
+      'Explain a real-world scenario where MNAR missingness would completely invalidate a model trained with mean imputation.',
+      'How does KNNImputer handle categorical columns? What preprocessing step is required first?',
+      'Why is it important to fit imputers on X_train only, even before adding indicator columns?',
+      'In what situations would you choose not to impute at all, and instead treat missingness as a feature?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Docs', text:'sklearn.impute — Official scikit-learn documentation'},
+      {type:'Article', text:'\"Missing Data: An Introduction\" – Stef van Buuren (MICE author)'},
+      {type:'Library', text:'missingno — pip install missingno (missingness visualization)'},
+      {type:'Paper', text:'\"MICE: Multivariate Imputation by Chained Equations\" (van Buuren 2011)'},
+      {type:'Video', text:'StatQuest: Missing Data — YouTube'}
+    ],
+    dataset:{name:'Synthetic Health Survey', source:'Synthetic (Python)',
+      desc:'800 rows: age, bmi, blood_pressure, glucose, smoking_status, income_bracket, hospital_visits, has_condition (target). Realistic MCAR/MAR/MNAR patterns injected.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(7)\nn=800\ndf=pd.DataFrame({"age":np.random.randint(20,80,n),"bmi":np.random.normal(26,5,n),"blood_pressure":np.random.normal(120,18,n),"glucose":np.random.normal(95,20,n),"smoking_status":np.random.choice(["never","former","current"],n),"income_bracket":np.random.choice(["low","mid","high"],n),"hospital_visits":np.random.poisson(1.5,n),"has_condition":np.random.binomial(1,0.25,n)})\nmask_mcar=np.random.rand(n)<0.12\ndf.loc[mask_mcar,"bmi"]=np.nan\nmask_mar=df["income_bracket"]=="low"\ndf.loc[mask_mar & (np.random.rand(n)<0.35),"glucose"]=np.nan\nmask_mnar=df["blood_pressure"]>145\ndf.loc[mask_mnar & (np.random.rand(n)<0.4),"blood_pressure"]=np.nan\ndf.to_csv("day02_health.csv",index=False)'},
+    deliverables:['Jupyter notebook: day02_imputation.ipynb','Missingness heatmap visualization','AUC comparison table across 3 imputation strategies','Feature importance chart showing missingness indicator contribution'],
+    readmeQuestions:[
+      'Which missingness pattern was most harmful to model performance, and why?',
+      'Did the missingness indicator columns improve AUC? What does this tell you about the data?',
+      'Which imputation strategy would you recommend for production deployment, and why?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn'],
+    successCriteria:[
+      'Correctly classified each column as MCAR/MAR/MNAR with justification',
+      'All three imputers implemented and compared on same train/test split',
+      'Missingness indicator columns included in at least one experiment',
+      'Result table shows numeric comparison of strategies'
+    ]
+  },
+  {
+    day:3, phase:'prod-ml', theme:'Feature Engineering', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['interaction terms','log transforms','binning','polynomial features','date decomposition','cyclic encoding','target encoding','domain-driven features'],
+    objectives:[
+      'Derive at least 5 meaningful features from raw columns that improve model performance',
+      'Apply cyclic encoding to time-based features and explain why sine/cosine is better than raw integers',
+      'Implement target encoding correctly with cross-validation to avoid leakage',
+      'Measure feature importance before and after engineering to quantify the value added'
+    ],
+    coreConcepts:'Raw columns rarely capture the signal your model needs. Feature engineering is the art of encoding domain knowledge into numbers. Log transforms handle right-skewed distributions (income, purchase amounts). Binning converts a continuous feature into groups that may have non-linear relationships with the target. Interaction terms (col_A * col_B) capture combined effects that neither column alone expresses. Date decomposition extracts hour, day_of_week, month, quarter, is_weekend from a timestamp — each may carry independent signal. Cyclic encoding uses sin(2π × feature/period) and cos(2π × feature/period) to represent features like hour-of-day or month correctly: hour 23 and hour 0 are adjacent, not far apart. Target encoding replaces a category with the mean target value for that category — powerful but leaks if not done with cross-fold averaging.',
+    activities:[
+      'Load the e-commerce dataset; identify 3 skewed numeric columns and apply log1p transform',
+      'Extract day_of_week, hour, is_weekend from the timestamp column; apply cyclic encoding to hour',
+      'Create interaction terms: session_duration × page_views, price × discount_pct',
+      'Implement target encoding for the product_category column using TargetEncoder with cv=5',
+      'Measure feature importances before and after engineering using a RandomForestClassifier'
+    ],
+    challenge:'Given a dataset of taxi rides with only pickup/dropoff timestamps, pickup_lat/lng, dropoff_lat/lng, and fare: engineer at least 8 features from scratch. No external data allowed. Achieve at least a 15% improvement in RMSE over a baseline model trained on raw features only.',
+    reflection:[
+      'Why is a simple integer (0–23) representation of hour wrong when modeling daily patterns?',
+      'Target encoding inflates in-sample performance. Describe exactly what goes wrong without cross-validation.',
+      'When would polynomial features hurt your model even if they have high correlation with the target?',
+      'You create a feature "income_per_family_member." What do you need to check before trusting it at inference time?',
+      'Explain the difference between a domain-driven feature and a statistically-driven feature. Which is more robust to distribution shift?'
+    ],
+    milestone:'Mini-Project 1 (Days 1–3): Combine encoding, imputation, and feature engineering into a single preprocessing pipeline for the retail dataset. Submit as a reusable Python module with unit tests.',
+    resources:[
+      {type:'Book', text:'Feature Engineering for Machine Learning — Alice Zheng & Amanda Casari'},
+      {type:'Article', text:'\"Cyclical Representations for Temporal Features\" – Ian London, Medium'},
+      {type:'Library', text:'feature-engine — pip install feature-engine'},
+      {type:'Repo', text:'featuretools — automated feature engineering (Alteryx)'},
+      {type:'Video', text:'Kaggle feature engineering course (free) — kaggle.com/learn'}
+    ],
+    dataset:{name:'E-commerce Session Data', source:'Synthetic (Python)',
+      desc:'2,000 rows: user_id, timestamp, session_duration_min, page_views, product_category, price, discount_pct, purchased (target). Rich date and interaction features available.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(21)\nn=2000\nbase=pd.Timestamp("2024-01-01")\ndf=pd.DataFrame({"user_id":np.random.randint(1,500,n),"timestamp":pd.to_datetime([base+pd.Timedelta(hours=int(h)) for h in np.random.randint(0,8760,n)]),"session_duration_min":np.random.exponential(8,n),"page_views":np.random.poisson(4,n)+1,"product_category":np.random.choice(["Electronics","Clothing","Home","Sports","Beauty"],n),"price":np.random.lognormal(4,1,n),"discount_pct":np.random.choice([0,0.1,0.15,0.2,0.3],n,p=[0.5,0.2,0.15,0.1,0.05])})\ndf["purchased"]=(df["session_duration_min"]>10)&(df["page_views"]>3)&(np.random.rand(n)>0.4)\ndf["purchased"]=df["purchased"].astype(int)\ndf.to_csv("day03_ecommerce.csv",index=False)'},
+    deliverables:['Jupyter notebook: day03_feature_engineering.ipynb','Feature importance chart (before vs after)','Reusable feature engineering module: feature_engineer.py','README documenting every feature and its rationale'],
+    readmeQuestions:[
+      'Which engineered feature had the highest importance, and what domain insight does it capture?',
+      'How did cyclic encoding change model behavior compared to raw hour integers?',
+      'If a new month appears at inference time that was not in training, what happens to your target encoder?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn'],
+    successCriteria:[
+      'At least 8 new features created with documented rationale',
+      'Cyclic encoding correctly applied (sin + cos columns)',
+      'Target encoding implemented with cross-validation',
+      'Feature importance comparison shows measurable improvement'
+    ]
+  },
+  {
+    day:4, phase:'prod-ml', theme:'Imbalance & Sampling', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['class imbalance','SMOTE','ADASYN','random undersampling','class weights','threshold shifting','precision-recall tradeoff','F1 beta'],
+    objectives:[
+      'Understand why accuracy is a misleading metric on imbalanced datasets',
+      'Compare 4 strategies for handling imbalance and measure their effect on recall and precision',
+      'Apply threshold shifting to optimize for a business-defined decision criterion',
+      'Explain why oversampling should only happen on training data and never before splitting'
+    ],
+    coreConcepts:'In a 95/5 imbalanced dataset, a model that predicts "majority class always" achieves 95% accuracy — and is completely useless. Imbalance forces you to think about what you are actually optimizing. SMOTE (Synthetic Minority Over-sampling Technique) generates synthetic minority samples by interpolating between existing ones. ADASYN does the same but focuses on hard-to-classify boundary examples. Class weights (class_weight="balanced") tell the model to penalize minority misclassifications more — the simplest and often most effective approach. Threshold shifting: by default models predict the positive class when probability > 0.5. Lowering the threshold to 0.3 increases recall at the cost of precision. Threshold choice is a business decision: detecting fraud wants high recall (miss few frauds); a recommendation system may want high precision (show relevant items). F-beta score lets you weight recall β times more than precision.',
+    activities:[
+      'Generate the fraud dataset; verify the class distribution is approximately 95/5',
+      'Baseline: train LogisticRegression without any imbalance handling; report precision, recall, F1',
+      'Apply SMOTE; retrain; compare results. Apply class_weight="balanced"; retrain; compare',
+      'Plot a precision-recall curve; find the threshold that maximizes F1 and also F2 (recall-heavy)',
+      'Write a function that takes a business rule (e.g. "catch 90% of fraud cases") and returns the optimal threshold'
+    ],
+    challenge:'You are a data scientist at a bank. The business says: "We can tolerate 20% false positive rate, but we must catch at least 85% of actual fraud." Build a model that meets this SLA. Your deliverable must include the final threshold, the evaluation table, and a one-paragraph justification for your approach.',
+    reflection:[
+      'Why should you never apply SMOTE before train-test splitting?',
+      'If you use SMOTE and then tune the threshold, are these two approaches redundant? Explain the relationship.',
+      'Your model has recall=0.92 and precision=0.15. In what business contexts is this acceptable? Unacceptable?',
+      'Explain how class_weight="balanced" mathematically affects the loss function.',
+      'What is the danger of reporting only F1 score when comparing imbalance strategies?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Library', text:'imbalanced-learn — pip install imbalanced-learn'},
+      {type:'Article', text:'\"Learning from Imbalanced Data\" – Haibo He & E. Garcia (IEEE)'},
+      {type:'Video', text:'\"Handling Imbalanced Datasets\" – Kaggle (Rob Mulla)'},
+      {type:'Docs', text:'sklearn: class_weight parameter — LogisticRegression, SVC, RandomForestClassifier'},
+      {type:'Article', text:'\"Calibration and Threshold Tuning\" – Platt scaling overview'}
+    ],
+    dataset:{name:'Synthetic Fraud Transactions', source:'Synthetic (Python)',
+      desc:'10,000 rows: transaction_amount, hour_of_day, merchant_type, user_age, account_age_days, n_transactions_24h, distance_from_home_km, is_fraud (target, ~5% positive).',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(99)\nn=10000\nfraud_n=int(n*0.05)\nnormal_n=n-fraud_n\nnorm=pd.DataFrame({"transaction_amount":np.random.lognormal(4,1,normal_n),"hour_of_day":np.random.randint(6,22,normal_n),"merchant_type":np.random.choice(["grocery","online","atm","restaurant","travel"],normal_n),"user_age":np.random.randint(21,70,normal_n),"account_age_days":np.random.randint(30,3000,normal_n),"n_transactions_24h":np.random.poisson(3,normal_n),"distance_from_home_km":np.random.exponential(5,normal_n),"is_fraud":0})\nfrd=pd.DataFrame({"transaction_amount":np.random.lognormal(6,1.5,fraud_n),"hour_of_day":np.random.choice([0,1,2,3,4,23],fraud_n),"merchant_type":np.random.choice(["online","atm"],fraud_n),"user_age":np.random.randint(21,70,fraud_n),"account_age_days":np.random.randint(1,90,fraud_n),"n_transactions_24h":np.random.poisson(12,fraud_n),"distance_from_home_km":np.random.exponential(80,fraud_n),"is_fraud":1})\ndf=pd.concat([norm,frd]).sample(frac=1,random_state=42).reset_index(drop=True)\ndf.to_csv("day04_fraud.csv",index=False)'},
+    deliverables:['Jupyter notebook: day04_imbalance.ipynb','Precision-recall curve plot','Strategy comparison table (baseline/SMOTE/class_weight/threshold)','threshold_optimizer.py function'],
+    readmeQuestions:[
+      'What threshold did you choose for the bank SLA challenge, and why?',
+      'Which strategy gave the best balance of precision and recall for this use case?',
+      'What would change in your approach if the dataset were 99/1 instead of 95/5?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn'],
+    successCriteria:[
+      'Baseline vs 4 strategies compared in a clean results table',
+      'Business SLA threshold function implemented and tested',
+      'Precision-recall curve with multiple thresholds marked',
+      'No SMOTE applied before train/test split'
+    ]
+  },
+  {
+    day:5, phase:'prod-ml', theme:'Evaluation Metrics Deep Dive', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['AUC-ROC','precision-recall AUC','F1','log loss','calibration','Brier score','confusion matrix','isotonic regression','Platt scaling'],
+    objectives:[
+      'Explain what AUC-ROC measures and when it can be misleading',
+      'Implement model calibration using isotonic regression and measure its effect',
+      'Choose the right metric for a given business objective and defend that choice',
+      'Plot and interpret a calibration curve (reliability diagram)'
+    ],
+    coreConcepts:'AUC-ROC measures how well a model ranks positive vs negative examples across all thresholds — but it is insensitive to class imbalance and threshold. AUC-PR (precision-recall area under curve) is more informative for imbalanced problems: a random classifier has AUC-PR equal to the positive class prevalence, not 0.5. Log loss measures confidence calibration — it penalizes confident wrong predictions heavily. Calibration: a model that outputs 0.8 probability should be correct 80% of the time. A poorly calibrated model may have high AUC but misleading probabilities. Brier score = mean((predicted_prob - true_label)²) — lower is better. Isotonic regression is a non-parametric calibration method; Platt scaling fits a logistic regression on top of the raw scores. Use CalibratedClassifierCV in sklearn.',
+    activities:[
+      'Train a GradientBoostingClassifier on the fraud dataset; extract predicted probabilities',
+      'Plot ROC curve, PR curve, and confusion matrix side by side',
+      'Plot a reliability/calibration curve using sklearn.calibration.CalibrationDisplay',
+      'Apply CalibratedClassifierCV with isotonic method; re-plot calibration curve',
+      'Calculate log loss and Brier score before and after calibration; build a metric summary table'
+    ],
+    challenge:'Your manager gives you two models: Model A has AUC-ROC=0.91 and Brier score=0.18. Model B has AUC-ROC=0.87 and Brier score=0.06. Which model would you deploy and why? Write a one-page analysis that a non-technical stakeholder can understand. Include a calibration curve comparison.',
+    reflection:[
+      'A model achieves AUC-ROC=0.95 on a 99/1 dataset. Is this impressive? What additional metrics would you request?',
+      'Describe a real-world scenario where a well-calibrated but lower-AUC model is preferable to a high-AUC uncalibrated one.',
+      'What does it mean intuitively when your calibration curve bows above the diagonal?',
+      'Why is log loss undefined when a model predicts exactly 0 or 1 probability?',
+      'How does model calibration interact with threshold selection?'
+    ],
+    milestone:'Mini-Project 2 (Days 4–5): Build a complete evaluation report for the fraud classification model. Include: metric table, PR curve, ROC curve, calibration curve, Brier score, threshold analysis. Package as a reusable report generator function.',
+    resources:[
+      {type:'Docs', text:'sklearn.calibration.CalibratedClassifierCV — official docs'},
+      {type:'Article', text:'\"Predicting Good Probabilities with Supervised Learning\" — Niculescu-Mizil & Caruana'},
+      {type:'Video', text:'\"ROC vs Precision-Recall\" — Josh Starmer (StatQuest)'},
+      {type:'Article', text:'\"Beyond Accuracy: Metrics for Imbalanced Problems\" – Towards Data Science'},
+      {type:'Docs', text:'sklearn.metrics module overview'}
+    ],
+    dataset:{name:'Credit Risk Scoring', source:'Kaggle: Give Me Some Credit',
+      desc:'150,000 borrowers: SeriousDlqin2yrs (target), RevolvingUtilization, age, NumberOfTime30-59DaysPastDue, DebtRatio, MonthlyIncome, NumberOfOpenCreditLines, etc. Classic calibration challenge.',
+      code:'# Download from Kaggle: https://www.kaggle.com/c/GiveMeSomeCredit/data\n# Or generate synthetic version:\nimport pandas as pd, numpy as np\nnp.random.seed(55)\nn=5000\ndf=pd.DataFrame({"utilization":np.random.beta(1.5,5,n),"age":np.random.randint(21,85,n),"past_due_30":np.random.poisson(0.3,n),"debt_ratio":np.random.lognormal(0,1,n).clip(0,5),"monthly_income":np.random.lognormal(8.5,0.8,n),"open_credit_lines":np.random.poisson(6,n),"default":np.random.binomial(1,0.067,n)})\ndf.to_csv("day05_credit.csv",index=False)'},
+    deliverables:['Jupyter notebook: day05_evaluation.ipynb','4-panel visualization (ROC, PR, calibration, confusion matrix)','evaluation_report.py reusable function','Written metric analysis comparing two hypothetical models'],
+    readmeQuestions:[
+      'What calibration issue did you find in your model, and how did you fix it?',
+      'For the credit risk use case, which metric is most aligned with business impact?',
+      'After calibration, did your model\'s ranking (AUC) change? Why or why not?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn','Matplotlib'],
+    successCriteria:[
+      'Calibration curve plotted before and after calibration correction',
+      'Brier score measurably improved after calibration',
+      'Written analysis distinguishes AUC vs calibration quality',
+      'Reusable evaluation report function works on any binary classifier'
+    ]
+  },
+  {
+    day:6, phase:'prod-ml', theme:'Feature Selection & Multicollinearity', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['VIF','correlation matrix','SelectKBest','mutual information','Lasso for selection','RFE','variance threshold','multicollinearity consequences'],
+    objectives:[
+      'Calculate VIF for a feature set and identify which features to remove',
+      'Apply three filter-based and two wrapper-based feature selection methods',
+      'Explain how multicollinearity hurts model interpretability even when it does not hurt prediction accuracy',
+      'Build a feature selection pipeline that is safe to use inside cross-validation'
+    ],
+    coreConcepts:'Redundant features add noise, increase training time, and destroy interpretability. Variance Inflation Factor (VIF) measures how much a feature\'s variance is explained by all other features. VIF > 10 indicates severe multicollinearity. Correlation matrix shows pairwise linear relationships — useful but incomplete (misses non-linear redundancy). SelectKBest with mutual_info_classif selects top-k features by information gain — a filter method that ignores the model. Lasso regression (L1) shrinks less important coefficients to exactly zero, performing implicit selection. RFE (Recursive Feature Elimination) trains a model, removes the weakest feature, repeats — a wrapper method that is model-aware. The cardinal rule: always wrap feature selection inside your CV loop — selecting features on the full dataset before CV introduces selection bias.',
+    activities:[
+      'Load the insurance dataset (40 features, many correlated); compute full VIF for all numeric features',
+      'Remove features with VIF > 10 iteratively; document what is removed at each step',
+      'Apply SelectKBest (mutual information) and plot feature scores as a horizontal bar chart',
+      'Use LassoCV to identify zero-coefficient features; compare selected set with VIF selection',
+      'Wrap SelectKBest inside a Pipeline and run 5-fold CV; compare AUC to unwrapped version'
+    ],
+    challenge:'You have 80 features for a churn prediction model. 15 features have VIF > 10. 20 more features have near-zero mutual information with the target. The business team insists that "revenue_last_month" must be included regardless. Build a production-safe selection pipeline that respects this constraint while maximizing model generalization.',
+    reflection:[
+      'VIF measures multicollinearity between features. Can a feature have low VIF but still be redundant? How?',
+      'If you run SelectKBest on the full dataset before train-test split, what kind of error have you introduced?',
+      'Lasso is both a regularization method and a feature selection method. Explain how these two functions are connected.',
+      'You remove 20 multicollinear features. Your AUC barely changes. Does this mean the features were useless?',
+      'What is the difference between feature selection and dimensionality reduction? When would you use each?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Docs', text:'statsmodels.stats.outliers_influence.variance_inflation_factor'},
+      {type:'Article', text:'\"An Introduction to Feature Selection\" – Jason Brownlee, MachineLearningMastery'},
+      {type:'Library', text:'sklearn.feature_selection module — SelectKBest, RFE, RFECV'},
+      {type:'Video', text:'\"Feature Selection Techniques\" — Krish Naik, YouTube'},
+      {type:'Article', text:'\"VIF in Python: How to Detect Multicollinearity\" — Towards Data Science'}
+    ],
+    dataset:{name:'Synthetic Insurance Claims', source:'Synthetic (Python)',
+      desc:'3,000 rows, 40 features: age, income, bmi, vehicle_age, policy_tenure, claim_history, 15 highly correlated derivatives, and 10 near-zero-variance columns. claim_filed (target).',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(33)\nn=3000\nbase=pd.DataFrame({"age":np.random.randint(18,80,n),"income":np.random.normal(55000,20000,n),"bmi":np.random.normal(26,5,n),"vehicle_age":np.random.randint(0,20,n),"policy_tenure":np.random.randint(1,15,n),"prior_claims":np.random.poisson(0.8,n)})\nfor i in range(14):\n    base[f"corr_feat_{i}"]=base[np.random.choice(["age","income","bmi"])]+np.random.normal(0,0.5,n)\nfor i in range(10):\n    base[f"noise_{i}"]=np.random.uniform(0,0.01,n)\nbase["claim_filed"]=((base["bmi"]>30)|(base["prior_claims"]>2)|(np.random.rand(n)<0.1)).astype(int)\nbase.to_csv("day06_insurance.csv",index=False)'},
+    deliverables:['Jupyter notebook: day06_feature_selection.ipynb','VIF table at each iteration','Feature importance comparison chart (VIF vs MI vs Lasso)','Pipeline with SelectKBest inside CV loop'],
+    readmeQuestions:[
+      'How many features did each method select, and where did they overlap?',
+      'Did removing multicollinear features change AUC? Did it change coefficient interpretability?',
+      'How would you automate this feature selection process for future datasets?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn','Statsmodels'],
+    successCriteria:[
+      'VIF computed and features dropped iteratively until all VIF < 10',
+      'Three selection methods compared on same dataset',
+      'Feature selection wrapped correctly inside Pipeline for CV',
+      'Bar chart shows selected features by each method'
+    ]
+  },
+  {
+    day:7, phase:'prod-ml', theme:'Dimensionality Reduction', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['PCA','explained variance ratio','scree plot','t-SNE','UMAP','when not to use PCA','truncated SVD for sparse data'],
+    objectives:[
+      'Apply PCA and interpret the scree plot to choose the number of components',
+      'Distinguish between PCA as analysis tool vs PCA as preprocessing step',
+      'Visualize high-dimensional data using t-SNE and UMAP',
+      'Explain why t-SNE distances are not meaningful and UMAP preserves more global structure'
+    ],
+    coreConcepts:'PCA finds orthogonal directions of maximum variance in your data. Each principal component is a linear combination of original features. The explained_variance_ratio_ tells you how much of the total information each component captures. A scree plot helps you find the "elbow" where adding more components gives diminishing returns. Critical mistake: using PCA to reduce 100 features to 50 before modeling often hurts performance because PCA maximizes variance, not predictive power. t-SNE creates a 2D embedding that preserves local neighborhood structure — great for cluster visualization but the axis values and inter-cluster distances are not interpretable. UMAP is faster, scales better, and preserves more global structure. Truncated SVD is PCA\'s sibling for sparse matrices (e.g. TF-IDF matrices).',
+    activities:[
+      'Load the product dataset (100 features); apply PCA and plot scree plot with cumulative variance',
+      'Find the number of components capturing 95% of variance; compare to 50 fixed components',
+      'Compare model AUC: full features vs PCA-reduced vs SelectKBest-reduced',
+      'Create t-SNE visualization colored by target class; identify natural clusters',
+      'Create UMAP visualization; compare clustering quality to t-SNE visually'
+    ],
+    challenge:'You are given a 500-feature sensor dataset. You must compress it to 20 features for a real-time inference pipeline (latency constraint). Compare PCA (95% variance), PCA (20 fixed), and SelectKBest (20) on downstream accuracy and explain which you would deploy and why.',
+    reflection:[
+      'If PCA component 1 explains 40% of variance, does that mean it is the most predictive feature for your target?',
+      'Two data scientists show you t-SNE plots. One says "the clusters are far apart so they are very different." Is this interpretation valid?',
+      'When would you use TruncatedSVD instead of PCA? What is the mathematical reason?',
+      'If you apply PCA in production, what additional artifact must you save alongside the model?',
+      'A colleague suggests using PCA to remove correlated features. How does this compare to VIF-based selection from Day 6?'
+    ],
+    milestone:'Mini-Project 3 (Days 6–7): Deliver a complete feature audit report for the insurance dataset. Include: VIF analysis, mutual information scores, PCA variance plot, t-SNE cluster visualization, and a recommended final feature set with justification.',
+    resources:[
+      {type:'Docs', text:'sklearn.decomposition.PCA — complete documentation with examples'},
+      {type:'Article', text:'\"How to Use t-SNE Effectively\" — distill.pub (Wattenberg, Viégas, Johnson)'},
+      {type:'Library', text:'umap-learn — pip install umap-learn'},
+      {type:'Video', text:'\"StatQuest: PCA Clearly Explained\" — Josh Starmer'},
+      {type:'Article', text:'\"PCA vs Feature Selection\" — Towards Data Science'}
+    ],
+    dataset:{name:'Synthetic Sensor Telemetry', source:'Synthetic (Python)',
+      desc:'2,000 samples, 100 features: simulated IoT sensor readings with correlated groups, some noise-only features. Binary target: device_fault. Rich PCA/UMAP visualization opportunity.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(17)\nn=2000\nlatent=np.random.randn(n,5)\nX=latent@np.random.randn(5,100)+np.random.randn(n,100)*0.3\ncols=[f"sensor_{i:03d}" for i in range(100)]\ndf=pd.DataFrame(X,columns=cols)\ndf["device_fault"]=(latent[:,0]>1.0).astype(int)\ndf.to_csv("day07_sensors.csv",index=False)'},
+    deliverables:['Jupyter notebook: day07_dimensionality.ipynb','Scree plot with cumulative variance','t-SNE and UMAP side-by-side cluster plots','Model comparison table: full vs PCA vs SelectKBest'],
+    readmeQuestions:[
+      'How many PCA components did you need to capture 95% variance?',
+      'Did PCA-reduced features outperform, match, or underperform SelectKBest features on this dataset?',
+      'What cluster structure did t-SNE or UMAP reveal that was not obvious in the raw data?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn','Matplotlib','UMAP'],
+    successCriteria:[
+      'Scree plot generated with elbow identified',
+      'At least two reduction methods compared on downstream task',
+      'Both t-SNE and UMAP visualizations produced',
+      'Clear reasoning for production choice documented'
+    ]
+  },
+  {
+    day:8, phase:'sql', theme:'Core SQL for ML Data Prep', artifact:'sql', difficulty:'Beginner',
+    concepts:['SELECT/WHERE/HAVING','GROUP BY + aggregations','CASE WHEN','NULL handling','type casting','data profiling queries','DISTINCT','LIMIT/OFFSET'],
+    objectives:[
+      'Write a complete data quality profile for any table using only SQL',
+      'Use CASE WHEN to create derived flag columns without leaving the database',
+      'Handle NULL values correctly in aggregations and comparisons',
+      'Understand why SQL profiling is faster than pandas for large tables'
+    ],
+    coreConcepts:'SQL is where production ML data lives. Being fluent in SQL means you can explore, validate, and extract features before any Python code runs. A data quality report in SQL counts: NULLs per column, distinct values, min/max/avg/stddev, and cardinality. CASE WHEN is SQL\'s conditional logic — think of it as a vectorized if-else. NULL is not zero and not empty string — it means "unknown." NULL = NULL is always false; use IS NULL. COUNT(*) counts all rows; COUNT(column) skips NULLs. Aggregations with GROUP BY split your data into groups; HAVING filters those groups (like WHERE but on grouped results). The reason SQL profiling beats pandas at scale: the database engine uses indexes and vectorized C operations on data that may not fit in memory.',
+    activities:[
+      'Set up a local SQLite database (or DuckDB) and import the sales database CSV files',
+      'Write a data quality query: count rows, count nulls per column, min/max/avg for all numeric columns',
+      'Use CASE WHEN to create: is_high_value (purchase > 500), customer_segment (based on age brackets)',
+      'Write a query that finds all products where avg_rating IS NULL but review_count > 0 (a data inconsistency)',
+      'Build a full data profiling stored procedure or CTE that runs on any table name'
+    ],
+    challenge:'You are handed a messy sales database with 5 tables. Before a single line of pandas runs, produce a complete SQL data quality report that identifies: all NULL patterns, inconsistent data types, impossible values (e.g. negative prices), and customer records that appear in transactions but not in the customers table.',
+    reflection:[
+      'Why does COUNT(*) and COUNT(column_name) give different results? Give a concrete example.',
+      'You write WHERE status = NULL. It returns no rows even though you can see NULL values. Why?',
+      'HAVING and WHERE both filter rows. Explain the execution order difference and give an example where only HAVING is correct.',
+      'If a column has 98% NULLs, should you keep it? What questions would you ask before deciding?',
+      'Why is SQL-based data profiling often faster than pandas-based profiling at scale?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Platform', text:'SQLiteOnline.com — browser-based SQL practice with no setup'},
+      {type:'Book', text:'Learning SQL — Alan Beaulieu (O\'Reilly, free preview)'},
+      {type:'Platform', text:'Mode Analytics SQL Tutorial — mode.com/sql-tutorial'},
+      {type:'Library', text:'DuckDB — pip install duckdb (fast in-process SQL for DataFrames)'},
+      {type:'Article', text:'\"SQL Data Profiling Queries Every Analyst Should Know\" — Count.co blog'}
+    ],
+    dataset:{name:'Retail Sales Database (SQLite)', source:'Synthetic (Python → SQLite)',
+      desc:'5 tables: customers (2000 rows), products (200), orders (8000), order_items (20000), stores (50). Includes intentional NULLs, duplicates, and impossible values for profiling practice.',
+      code:'import sqlite3, pandas as pd, numpy as np\nnp.random.seed(42)\nconn=sqlite3.connect("day08_sales.db")\nnp.random.seed(42)\ncust=pd.DataFrame({"customer_id":range(1,2001),"name":[f"Customer_{i}" for i in range(1,2001)],"age":np.where(np.random.rand(2000)<0.05,None,np.random.randint(18,80,2000)),"region":np.random.choice(["North","South","East","West"],2000),"signup_date":pd.date_range("2020-01-01",periods=2000,freq="8H").astype(str)})\ncust.to_sql("customers",conn,index=False,if_exists="replace")\nprods=pd.DataFrame({"product_id":range(1,201),"name":[f"Product_{i}" for i in range(1,201)],"category":np.random.choice(["Electronics","Clothing","Home","Food"],200),"price":np.where(np.random.rand(200)<0.02,-1,np.random.uniform(5,500,200)),"avg_rating":np.where(np.random.rand(200)<0.1,None,np.random.uniform(1,5,200))})\nprods.to_sql("products",conn,index=False,if_exists="replace")\norders=pd.DataFrame({"order_id":range(1,8001),"customer_id":np.random.randint(1,2001,8000),"store_id":np.random.randint(1,51,8000),"order_date":pd.date_range("2022-01-01",periods=8000,freq="1H").astype(str),"total_amount":np.random.exponential(120,8000)})\norders.to_sql("orders",conn,index=False,if_exists="replace")\nconn.close()'},
+    deliverables:['SQL script: day08_data_quality.sql (all profiling queries)','Jupyter notebook connecting to DB and reading results into pandas','Written report: 3 data quality issues found and how to fix them'],
+    readmeQuestions:[
+      'What data quality issues did you discover, and how would they affect a downstream ML model?',
+      'Which SQL technique was most useful for profiling: aggregations, CASE WHEN, or NULL checks?',
+      'How would you adapt your profiling query to run on any table automatically?'
+    ],
+    skillIntegration:['SQL','Python','Pandas','DuckDB/SQLite'],
+    successCriteria:[
+      'Data quality query returns null counts, min/max/avg for all numeric columns',
+      'At least 3 data issues identified with SQL evidence',
+      'CASE WHEN used to create at least 2 derived columns',
+      'Results loaded into pandas DataFrame for further analysis'
+    ]
+  },
+  {
+    day:9, phase:'sql', theme:'Joins, CTEs & Window Functions', artifact:'sql', difficulty:'Intermediate',
+    concepts:['INNER/LEFT/ANTI JOIN','CTEs','window functions','ROW_NUMBER','RANK','LAG/LEAD','PARTITION BY','rolling aggregations','NTILE'],
+    objectives:[
+      'Build a multi-table feature join using CTEs without creating intermediate tables',
+      'Use window functions to compute running totals, lag features, and row rankings',
+      'Detect duplicates and rank records using ROW_NUMBER with PARTITION BY',
+      'Create a production-ready customer feature table entirely in SQL'
+    ],
+    coreConcepts:'CTEs (Common Table Expressions) with WITH let you write readable, modular SQL — each step as a named building block. They replace subqueries and make complex feature pipelines auditable. Window functions compute aggregations across a "window" of rows without collapsing the result. PARTITION BY divides data into groups; ORDER BY defines the row sequence within each group. ROW_NUMBER() gives each row a unique rank within its partition — perfect for deduplication. LAG(column, n) accesses the value n rows before the current row — how you create time-series lag features in SQL. LEAD(column, n) looks ahead. Running SUM(amount) OVER (PARTITION BY customer_id ORDER BY date) gives the cumulative spend per customer at each transaction point. NTILE(4) divides rows into quartiles.',
+    activities:[
+      'Write a CTE that joins orders, customers, and products; compute total spend and order count per customer',
+      'Use ROW_NUMBER() PARTITION BY customer_id ORDER BY order_date DESC to identify each customer\'s most recent order',
+      'Create LAG features: previous order amount, days since last order, for each customer-order pair',
+      'Build a 30-day rolling sum of purchase amount per customer using window functions',
+      'Identify and remove duplicate orders using ROW_NUMBER() in a CTE'
+    ],
+    challenge:'Build a complete customer feature table for churn prediction using only SQL and the sales database. Your output table must include: recency (days since last order), frequency (orders in last 90 days), monetary (avg and total spend), most purchased category, product diversity score (distinct products), and a churn label (no order in last 60 days). No Python allowed — only SQL.',
+    reflection:[
+      'What is the difference between a CTE and a subquery? When would you choose one over the other?',
+      'A LEFT JOIN returns all rows from the left table even when there is no match. What value appears in the right table\'s columns for non-matching rows?',
+      'ROW_NUMBER(), RANK(), and DENSE_RANK() all rank rows. What is the difference in behavior when there are ties?',
+      'You want to compute a 7-day rolling average of sales per store. What window specification would you write?',
+      'Explain "point-in-time correctness" in ML feature engineering. How does LAG in SQL help achieve it?'
+    ],
+    milestone:'Mini-Project 4 (Days 8–9): Complete RFM (Recency, Frequency, Monetary) analysis in pure SQL. Segment customers into 5 tiers using NTILE. Export to Power BI and build a customer segmentation bar chart.',
+    resources:[
+      {type:'Platform', text:'pgexercises.com — hands-on SQL exercises with immediate feedback'},
+      {type:'Book', text:'SQL for Data Analysis — Cathy Tanimura (O\'Reilly)'},
+      {type:'Article', text:'\"Window Functions: The Foundation of Analytical SQL\" — Modern SQL'},
+      {type:'Video', text:'\"SQL Window Functions Tutorial\" — Alex the Analyst, YouTube'},
+      {type:'Docs', text:'DuckDB SQL Reference — duckdb.org/docs'}
+    ],
+    dataset:{name:'Retail Sales Database (continued)', source:'day08_sales.db',
+      desc:'Same 5-table retail database from Day 8. Focus shifts to joining tables and computing temporal features via window functions.',
+      code:'# Reuse day08_sales.db\n# Add order_items table:\nimport sqlite3, numpy as np, pandas as pd\nconn=sqlite3.connect("day08_sales.db")\noi=pd.DataFrame({"item_id":range(1,20001),"order_id":np.random.randint(1,8001,20000),"product_id":np.random.randint(1,201,20000),"quantity":np.random.randint(1,6,20000),"unit_price":np.random.uniform(5,500,20000)})\noi.to_sql("order_items",conn,index=False,if_exists="replace")\nconn.close()'},
+    deliverables:['SQL script: day09_window_functions.sql','SQL script: day09_customer_features.sql (the RFM CTE)','Jupyter notebook: query results + exploratory analysis','Power BI bar chart of customer segments (optional)'],
+    readmeQuestions:[
+      'Which window function was most valuable for creating ML features, and why?',
+      'How would you modify the RFM query to update in real-time as new orders arrive?',
+      'What SQL anti-pattern did you encounter or avoid during this exercise?'
+    ],
+    skillIntegration:['SQL','Python','Pandas','Power BI'],
+    successCriteria:[
+      'Multi-table CTE query runs without errors and returns correct results',
+      'LAG and rolling window features correctly computed per customer',
+      'RFM table correctly segments customers with NTILE',
+      'SQL scripts are readable and commented'
+    ]
+  },
+  {
+    day:10, phase:'sql', theme:'Feature Generation in SQL + Power BI Intro', artifact:'sql', difficulty:'Intermediate',
+    concepts:['temporal features in SQL','cohort analysis','funnel metrics','aggregate feature tables','SQL as ETL','data quality checks','Power BI basics','DAX intro'],
+    objectives:[
+      'Build a complete ML training feature table entirely in SQL with no pandas transformation',
+      'Perform cohort retention analysis using SQL date arithmetic',
+      'Connect a SQL database to Power BI and build a basic dashboard',
+      'Understand why SQL-generated features are more production-reproducible than pandas features'
+    ],
+    coreConcepts:'In production ML, feature tables are typically materialized views or scheduled SQL queries — not Python scripts. This makes features reproducible, auditable, and available to any downstream consumer. Cohort analysis groups users by signup date and tracks their retention: "Of users who signed up in January, what % made a second purchase in each subsequent month?" Funnel analysis tracks event sequences: "How many users who visited the product page also added to cart, also checked out?" Both are pure SQL problems. Power BI connects directly to databases (SQLite, PostgreSQL, Azure SQL) and lets you build dashboards on top of SQL views. DAX (Data Analysis Expressions) is Power BI\'s formula language — similar to Excel but column-level.',
+    activities:[
+      'Build a complete feature table for churn prediction using only SQL CTEs (extend Day 9 work)',
+      'Write a cohort retention query: group by signup month, track purchase rates for 3 subsequent months',
+      'Write a funnel query: session → product_view → cart_add → purchase conversion rates',
+      'Connect Power BI Desktop to day08_sales.db; load the customer feature table',
+      'Build a Power BI report: monthly revenue bar chart, customer segment donut, cohort retention heatmap'
+    ],
+    challenge:'Your data science manager asks for a self-refreshing Power BI dashboard showing: (1) model prediction volume by day, (2) feature drift indicator (avg feature values over time), (3) customer churn risk distribution. Build the SQL views that would power this dashboard and mock up the Power BI layout.',
+    reflection:[
+      'Why are SQL-generated features easier to port to production than pandas-generated features?',
+      'In a cohort retention table, what does row 3, column 2 represent? What SQL logic generates that cell?',
+      'What is the difference between a SQL VIEW and a materialized table? When would you use each?',
+      'Power BI uses DAX for calculations. Give one example where DAX is more appropriate than pre-computing in SQL.',
+      'Your feature generation query takes 45 minutes to run. What SQL optimization techniques would you investigate first?'
+    ],
+    milestone:'Mini-Project 5 (Days 8–10): End-to-end SQL-to-Power BI pipeline. SQL generates the feature table → Power BI connects → dashboard displays customer segments, cohort retention heatmap, and top revenue products. Submit screenshots + SQL scripts.',
+    resources:[
+      {type:'Docs', text:'Power BI Desktop — free download at powerbi.microsoft.com'},
+      {type:'Video', text:'\"Power BI Full Course for Beginners\" — Guy in a Cube, YouTube'},
+      {type:'Article', text:'\"Cohort Analysis in SQL\" — Count.co blog'},
+      {type:'Platform', text:'Microsoft Learn: Power BI — free official tutorials'},
+      {type:'Docs', text:'DuckDB + Python integration guide — duckdb.org'}
+    ],
+    dataset:{name:'E-commerce Events & Sessions', source:'Synthetic (Python → SQLite)',
+      desc:'3 new tables added to existing DB: user_events (page_view, cart_add, purchase events), sessions (session-level metadata), cohorts (signup dates for 2,000 users). Perfect for funnel + cohort SQL.',
+      code:'import sqlite3, pandas as pd, numpy as np\nnp.random.seed(77)\nconn=sqlite3.connect("day08_sales.db")\nn=15000\nevents=pd.DataFrame({"event_id":range(1,n+1),"user_id":np.random.randint(1,2001,n),"event_type":np.random.choice(["page_view","cart_add","purchase"],n,p=[0.65,0.25,0.10]),"product_id":np.random.randint(1,201,n),"event_ts":pd.date_range("2023-01-01",periods=n,freq="30min").astype(str)})\nevents.to_sql("user_events",conn,index=False,if_exists="replace")\ncohorts=pd.DataFrame({"user_id":range(1,2001),"signup_month":np.random.choice(pd.date_range("2023-01-01","2023-06-01",freq="MS").astype(str),2000)})\ncohorts.to_sql("cohorts",conn,index=False,if_exists="replace")\nconn.close()'},
+    deliverables:['SQL script: day10_feature_table.sql','SQL script: day10_cohort_retention.sql','SQL script: day10_funnel_analysis.sql','Power BI file (.pbix) with 3-page dashboard (or screenshots)'],
+    readmeQuestions:[
+      'What is the overall funnel conversion rate from page_view to purchase in your dataset?',
+      'Which signup cohort has the best 3-month retention, and what might explain this?',
+      'How would you schedule your SQL feature table to refresh daily in a production pipeline?'
+    ],
+    skillIntegration:['SQL','Power BI','DAX','Python','Pandas'],
+    successCriteria:[
+      'Feature table SQL query returns clean, ML-ready output with no Python transformation needed',
+      'Cohort retention query returns a matrix with correct month-over-month logic',
+      'Power BI dashboard has at least 3 working visuals connected to live data',
+      'Funnel conversion rates are computed correctly'
+    ]
+  },
+  {
+    day:11, phase:'classical', theme:'Logistic Regression In Depth', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['logistic regression','decision boundary','L1/L2 regularization','odds ratios','confidence intervals','coefficients as features','log-odds interpretation'],
+    objectives:[
+      'Interpret logistic regression coefficients as odds ratios and explain them to a non-technical audience',
+      'Implement L1 and L2 regularization and observe their effect on coefficient sparsity',
+      'Understand the decision boundary and how regularization strength changes its shape',
+      'Recognize why logistic regression is still the first model you should try'
+    ],
+    coreConcepts:'Logistic regression predicts the log-odds of a class: log(p/(1-p)) = β₀ + β₁x₁ + ... The sigmoid function squashes this to a probability. The coefficient β₁ means: when x₁ increases by 1 unit, the log-odds increase by β₁, which means the odds multiply by exp(β₁). If exp(β₁) = 1.8, that feature increases the odds of the positive class by 80%. L1 (Lasso) regularization adds |β| to the loss — it drives weak coefficients to exactly zero, performing implicit feature selection. L2 (Ridge) adds β² — it shrinks coefficients but rarely to zero. The C parameter in sklearn is the inverse of regularization strength (small C = more regularization). Always use cross-validated C selection. LR is explainable, fast, and often competitive — it should always be your baseline.',
+    activities:[
+      'Train L1 and L2 LogisticRegression on the credit dataset; plot coefficient magnitudes as bar charts',
+      'Find the C value that gives exactly 20 non-zero coefficients using L1; verify with a sparsity plot',
+      'Compute odds ratios (exp(coef)) and build a table: feature, coefficient, odds ratio, p-value (using statsmodels)',
+      'Plot the 2D decision boundary for two selected features; overlay training points colored by class',
+      'Write a function that explains a single prediction: "This customer was flagged because income is low (odds x1.8) and prior_claims is high (odds x3.2)"'
+    ],
+    challenge:'A credit union asks you to build a loan default model that can be explained to loan officers with no ML background. Build a logistic regression model, select the 10 most important features using L1, compute odds ratios, and write a 1-page plain-English explanation of how the model makes decisions. Include a coefficient table formatted for a Word document.',
+    reflection:[
+      'A coefficient of -0.8 in logistic regression. Interpret this in terms of odds ratios.',
+      'Your logistic regression has very high training accuracy but poor test accuracy. What does this suggest, and which regularization would you increase?',
+      'Why is it dangerous to compare coefficients directly without standardizing features first?',
+      'Logistic regression assumes a linear relationship between features and log-odds. When does this assumption break down, and what can you do about it?',
+      'How would you test whether logistic regression is significantly better than a null model (predicting the majority class always)?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Book', text:'Introduction to Statistical Learning — James et al. (Chapter 4, free PDF)'},
+      {type:'Library', text:'statsmodels.api.Logit — for p-values and confidence intervals'},
+      {type:'Video', text:'\"Logistic Regression\" — StatQuest (Josh Starmer)'},
+      {type:'Article', text:'\"How to Interpret Logistic Regression Coefficients\" — Towards Data Science'},
+      {type:'Docs', text:'sklearn.linear_model.LogisticRegressionCV'}
+    ],
+    dataset:{name:'Loan Default Prediction', source:'Kaggle: LendingClub subset or synthetic',
+      desc:'5,000 loans: loan_amount, interest_rate, annual_income, debt_to_income, credit_score, employment_length, home_ownership, purpose, default (target). Good for coefficient interpretation.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(11)\nn=5000\ndf=pd.DataFrame({"loan_amount":np.random.lognormal(9,0.8,n),"interest_rate":np.random.uniform(5,30,n),"annual_income":np.random.lognormal(10.5,0.7,n),"debt_to_income":np.random.uniform(0,0.5,n),"credit_score":np.random.randint(580,850,n),"employment_years":np.random.randint(0,20,n),"home_ownership":np.random.choice(["rent","mortgage","own"],n),"purpose":np.random.choice(["debt_consolidation","home_improvement","other","car"],n)})\nlogit=-3+0.3*df["debt_to_income"]*10-0.02*(df["credit_score"]-700)/10+0.1*df["interest_rate"]/10\nprob=1/(1+np.exp(-logit))\ndf["default"]=np.random.binomial(1,prob)\ndf.to_csv("day11_loans.csv",index=False)'},
+    deliverables:['Jupyter notebook: day11_logistic_regression.ipynb','Coefficient table with odds ratios','Decision boundary plot (2D)','Plain-English model explanation (Markdown cell)'],
+    readmeQuestions:[
+      'Which feature has the highest positive impact on default probability? What is the odds ratio?',
+      'How many features did L1 set to zero at your chosen C? Which features survived?',
+      'Could a loan officer use your model explanation to manually score a new applicant?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn','Statsmodels','Matplotlib'],
+    successCriteria:[
+      'Odds ratio table computed and interpreted correctly',
+      'L1 vs L2 coefficient sparsity comparison completed',
+      'Plain-English explanation a non-technical person could follow',
+      'Model beats majority-class baseline by measurable margin'
+    ]
+  },
+  {
+    day:12, phase:'classical', theme:'Trees & Ensemble Methods', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['Decision Tree','max_depth/min_samples_leaf','Random Forest','Gradient Boosting','XGBoost','bagging vs boosting','early stopping','learning curves'],
+    objectives:[
+      'Explain the core difference between bagging and boosting and when each is preferable',
+      'Tune XGBoost with early stopping and understand what each hyperparameter controls',
+      'Plot and interpret learning curves to diagnose overfitting vs underfitting',
+      'Compare Random Forest and XGBoost on the same task with identical cross-validation'
+    ],
+    coreConcepts:'Decision Trees split data by feature thresholds to minimize impurity. max_depth controls complexity; deeper = more overfit. Bagging (Random Forest) trains N independent trees on bootstrap samples and averages predictions — reduces variance, robust to outliers. Boosting (GradientBoosting, XGBoost) trains trees sequentially, each correcting the errors of the last — reduces both bias and variance but is more sensitive to hyperparameters. XGBoost adds regularization (lambda, alpha), column subsampling, and early stopping. Early stopping monitors a validation metric: training stops when it has not improved for n_estimators consecutive rounds. Key XGBoost hyperparameters: n_estimators (how many trees), max_depth (tree complexity), learning_rate (step size), subsample (row sampling), colsample_bytree (column sampling). Learning curves plot train and validation performance vs training set size — if both plateau high, you need more data; if validation is far below train, you are overfitting.',
+    activities:[
+      'Train a Decision Tree with default depth; visualize it using plot_tree; identify overfitting signs',
+      'Train RandomForest and XGBoost on the churn dataset; compare AUC with 5-fold stratified CV',
+      'Set early_stopping_rounds=20 in XGBoost; plot training vs validation RMSE by n_estimators',
+      'Plot learning curves for both RF and XGBoost; identify which model generalizes better at small sample sizes',
+      'Extract and plot feature importances from both models; identify the top 5 disagreements between them'
+    ],
+    challenge:'A telecoms company gives you 3 months of customer data for churn prediction. Budget constraint: the model must make predictions in < 50ms. Deliver the best possible model within this latency budget. Quantify the latency and AUC tradeoff between your 500-tree Random Forest and a 100-tree XGBoost. Choose and defend your selection.',
+    reflection:[
+      'Random Forest averages 500 trees. Why does it not overfit even though individual trees are very deep?',
+      'XGBoost has a "learning_rate" parameter. If you decrease it from 0.1 to 0.01, what else must you increase?',
+      'Explain why XGBoost feature importance can be misleading for correlated features. How does SHAP (Day 16) fix this?',
+      'Your model has train AUC=0.97 and test AUC=0.74. What is the most likely cause? Name 3 things you would try.',
+      'What is the difference between feature importance in Random Forest vs Gradient Boosting?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Paper', text:'XGBoost: A Scalable Tree Boosting System — Chen & Guestrin (2016)'},
+      {type:'Video', text:'\"XGBoost\" — StatQuest (3-part series)'},
+      {type:'Docs', text:'XGBoost Python API Reference — xgboost.readthedocs.io'},
+      {type:'Article', text:'\"Gradient Boosting Explained\" — Explained.ai (Parr & Howard)'},
+      {type:'Repo', text:'LightGBM — github.com/microsoft/LightGBM (XGBoost alternative, faster)'}
+    ],
+    dataset:{name:'Telecom Customer Churn', source:'Kaggle: IBM Telco Customer Churn',
+      desc:'7,043 customers: tenure, monthly_charges, total_charges, contract_type, internet_service, payment_method, tech_support, and 10 more features. Churn (target). Classic ensemble benchmark.',
+      code:'# Download: kaggle datasets download -d blastchar/telco-customer-churn\n# Or synthetic:\nimport pandas as pd, numpy as np\nnp.random.seed(28)\nn=7000\ndf=pd.DataFrame({"tenure":np.random.randint(1,73,n),"monthly_charges":np.random.uniform(18,120,n),"total_charges":np.random.uniform(18,8000,n),"contract":np.random.choice(["Month-to-month","One year","Two year"],n,p=[0.55,0.25,0.20]),"internet":np.random.choice(["Fiber optic","DSL","No"],n),"payment":np.random.choice(["Electronic","Mailed check","Auto bank","Auto card"],n),"senior":np.random.binomial(1,0.16,n)})\ndf["churn"]=(((df["contract"]=="Month-to-month")&(df["tenure"]<12))|(np.random.rand(n)<0.08)).astype(int)\ndf.to_csv("day12_telco_churn.csv",index=False)'},
+    deliverables:['Jupyter notebook: day12_ensembles.ipynb','Learning curve plots (RF and XGBoost)','Feature importance comparison chart','Latency benchmark table (inference time per 1000 rows)'],
+    readmeQuestions:[
+      'Which model would you deploy for the telecom use case, and why?',
+      'What hyperparameter had the largest impact on XGBoost performance in your experiments?',
+      'How did early stopping prevent overfitting in your XGBoost training run?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn','XGBoost','Matplotlib'],
+    successCriteria:[
+      'Both RF and XGBoost trained with identical 5-fold CV setup',
+      'Early stopping implemented and training curve plotted',
+      'Inference latency measured and compared',
+      'Feature importance comparison chart produced'
+    ]
+  },
+  {
+    day:13, phase:'classical', theme:'sklearn Pipelines & ColumnTransformer', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['sklearn Pipeline','ColumnTransformer','FunctionTransformer','custom transformers','BaseEstimator','pipeline serialization','joblib','leakage prevention in pipelines'],
+    objectives:[
+      'Build a complete preprocessing + modeling Pipeline that can be serialized and deployed',
+      'Implement a custom transformer using BaseEstimator and TransformerMixin',
+      'Apply ColumnTransformer to handle numeric and categorical columns in a single step',
+      'Understand why a Pipeline is the minimal viable artifact for production ML'
+    ],
+    coreConcepts:'A sklearn Pipeline chains transformers and a final estimator. When you call pipeline.fit(X_train, y_train), it fits each transformer and passes transformed output to the next step. When you call pipeline.predict(X_test), it transforms X_test using the already-fitted transformers — no leakage. ColumnTransformer applies different preprocessing to different columns: numeric columns get imputed + scaled; categorical columns get imputed + encoded. Custom transformers: subclass BaseEstimator and TransformerMixin, implement fit(X, y=None) and transform(X). This is how you package domain-specific logic (cyclic encoding, log transforms) into a reusable step. Serialization: pipeline = joblib.dump(pipeline, "model.joblib"). joblib is faster than pickle for NumPy arrays. The Pipeline object is the deployment artifact — it encapsulates all preprocessing state.',
+    activities:[
+      'Build a ColumnTransformer for the churn dataset: StandardScaler for numeric, OneHotEncoder for categorical',
+      'Wrap the ColumnTransformer + XGBoost inside a Pipeline; fit and evaluate with cross_val_score',
+      'Build a custom LogTransformer class with fit/transform for the skewed income column',
+      'Add the custom transformer to the Pipeline; verify it is called correctly during CV',
+      'Serialize the fitted pipeline with joblib; reload it; score on test set; verify results match'
+    ],
+    challenge:'Take all preprocessing work from Days 1–5 (encoding, imputation, scaling, feature engineering) and consolidate it into a single, production-ready Pipeline with a ColumnTransformer. The Pipeline must: (1) handle new unseen categories gracefully, (2) serialize to a file under 50MB, (3) run inference in < 10ms per row. Test all three constraints.',
+    reflection:[
+      'If you apply StandardScaler inside a Pipeline during cross-validation, on which data does fit() get called?',
+      'What happens when you call pipeline.predict() on data with a new categorical value not seen during training?',
+      'Explain why set_output(transform="pandas") in sklearn 1.2+ matters for production debugging.',
+      'What is the difference between pipeline.steps and pipeline.named_steps?',
+      'You want to add feature selection to your Pipeline. Where in the Pipeline should it be placed?'
+    ],
+    milestone:'Mini-Project 6 (Days 11–13): Build a complete, serialized sklearn Pipeline for the churn dataset. It must include: imputation, encoding, scaling, feature selection, and XGBoost. The pipeline must score > 0.80 AUC and be tested end-to-end from raw CSV to prediction.',
+    resources:[
+      {type:'Docs', text:'sklearn Pipeline and ColumnTransformer — official documentation with examples'},
+      {type:'Article', text:'\"Building Sklearn Pipelines\" — Towards Data Science'},
+      {type:'Video', text:'\"Scikit-learn Pipelines\" — Corey Schafer, YouTube'},
+      {type:'Docs', text:'joblib documentation — joblib.readthedocs.io'},
+      {type:'Article', text:'\"Custom Transformers in sklearn\" — DataCamp blog'}
+    ],
+    dataset:{name:'Telecom Churn (continued)', source:'day12_telco_churn.csv',
+      desc:'Same dataset as Day 12 but now treated as a production problem. Focus: build a Pipeline that handles raw input → prediction without any manual preprocessing.',
+      code:'# Reuse day12_telco_churn.csv\n# No new dataset needed.\n# Focus is on building the Pipeline architecture.'},
+    deliverables:['Jupyter notebook: day13_pipeline.ipynb','Serialized pipeline: churn_pipeline.joblib','Custom transformer: log_transformer.py','Inference test script: test_pipeline.py'],
+    readmeQuestions:[
+      'What would happen to your model\'s predictions if you forgot to save the pipeline and only saved the model?',
+      'How did wrapping preprocessing in a Pipeline change your cross-validation setup?',
+      'What is the file size of your serialized pipeline, and what contributes most to that size?'
+    ],
+    skillIntegration:['Python','Pandas','Scikit-learn','Git'],
+    successCriteria:[
+      'Pipeline serializes and reloads without errors',
+      'Custom transformer correctly fits and transforms',
+      'CV results using Pipeline match previous results',
+      'Inference latency measured and under 10ms per row'
+    ]
+  },
+  {
+    day:14, phase:'classical', theme:'Cross-Validation & Hyperparameter Tuning', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['KFold','StratifiedKFold','TimeSeriesSplit','GridSearchCV','RandomizedSearchCV','Optuna','overfitting detection','validation curves','nested CV'],
+    objectives:[
+      'Choose the correct CV strategy based on data characteristics (balanced, imbalanced, time-ordered)',
+      'Implement Optuna for hyperparameter optimization and compare it to RandomizedSearchCV',
+      'Detect and diagnose overfitting using validation curves',
+      'Understand why nested cross-validation is needed to get an unbiased performance estimate'
+    ],
+    coreConcepts:'Cross-validation splits data into k folds; the model trains on k-1 folds and validates on the remaining fold, repeating k times. StratifiedKFold preserves class proportions in each fold — critical for imbalanced problems. TimeSeriesSplit ensures that validation data is always chronologically after training data — essential to avoid future data leaking into the past. GridSearchCV tries every combination of hyperparameters — exhaustive but slow. RandomizedSearchCV samples n_iter combinations from distributions — much faster for large search spaces. Optuna is a state-of-the-art HPO library using Tree-structured Parzen Estimator: it learns which hyperparameter regions are promising and samples there. Nested CV: an outer loop estimates model performance; an inner loop selects hyperparameters. Without nesting, your reported performance is optimistic.',
+    activities:[
+      'Compare KFold vs StratifiedKFold on the fraud dataset; observe variance difference in AUC across folds',
+      'Apply TimeSeriesSplit to a synthetic time-series churn dataset; visualize how each fold is split',
+      'Run RandomizedSearchCV for XGBoost with n_iter=50; time it; report best params and score',
+      'Implement the same search with Optuna; compare: best AUC, number of evaluations, time',
+      'Plot a validation curve for max_depth (2 to 15); identify the optimal depth and signs of overfitting'
+    ],
+    challenge:'You have a time-series dataset of daily website sessions and a target: will the user subscribe in the next 7 days? Design a CV strategy that is appropriate for this problem. Run Optuna to find optimal XGBoost hyperparameters. Report your final model performance using nested CV (not the same data used for tuning). Explain in a README how nested CV prevents optimistic evaluation.',
+    reflection:[
+      'You run GridSearchCV with 5-fold CV across 100 hyperparameter combinations. How many model fits does this require?',
+      'Why is it wrong to use k-fold CV for time-series data? Give a concrete example of the leakage that occurs.',
+      'Describe a situation where RandomizedSearchCV would find a better solution than GridSearchCV with the same compute budget.',
+      'What is the difference between a validation curve and a learning curve? What does each diagnose?',
+      'If you tune hyperparameters using cross-validation and then report the CV score as your model\'s performance, why is this score optimistic?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Library', text:'Optuna — pip install optuna (optuna.org)'},
+      {type:'Article', text:'\"A Gentle Introduction to Nested Cross-Validation\" — MachineLearningMastery'},
+      {type:'Docs', text:'sklearn.model_selection — GridSearchCV, RandomizedSearchCV, TimeSeriesSplit'},
+      {type:'Video', text:'\"Hyperparameter Tuning\" — Krish Naik, YouTube'},
+      {type:'Article', text:'\"Why Your HPO Results Are Optimistic\" — neptune.ai blog'}
+    ],
+    dataset:{name:'Time-Series Subscription Events', source:'Synthetic (Python)',
+      desc:'Daily records for 1,500 users over 180 days: session_count, page_views, email_opens, days_since_signup, tier, subscribed_next_7d (target). Time-ordered — correct CV is non-trivial.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(55)\nusers=1500; days=180\nrecords=[]\nfor uid in range(1,users+1):\n    tenure=np.random.randint(1,days)\n    for d in range(tenure,min(tenure+np.random.randint(14,days),days)):\n        records.append({"user_id":uid,"day":d,"session_count":max(0,int(np.random.poisson(3))),"page_views":max(0,int(np.random.poisson(8))),"email_opens":np.random.binomial(5,0.3),"subscribed_next_7d":int(np.random.rand()<0.12)})\ndf=pd.DataFrame(records).sort_values(["day","user_id"]).reset_index(drop=True)\ndf.to_csv("day14_timeseries.csv",index=False)'},
+    deliverables:['Jupyter notebook: day14_cv_tuning.ipynb','Optuna study visualization (optimization history + param importances)','Validation curve plots for 2 hyperparameters','README: explanation of nested CV with diagram'],
+    readmeQuestions:[
+      'What did Optuna discover about the interaction between learning_rate and n_estimators?',
+      'How did your CV AUC change when you switched from KFold to TimeSeriesSplit?',
+      'What is the difference between the CV score reported by RandomizedSearchCV and a true test set score?'
+    ],
+    skillIntegration:['Python','Pandas','Scikit-learn','XGBoost','Optuna'],
+    successCriteria:[
+      'TimeSeriesSplit correctly implemented with visualization of fold boundaries',
+      'Optuna study completed with at least 50 trials',
+      'Validation curves generated for at least 2 hyperparameters',
+      'Nested CV correctly implemented with outer and inner loops'
+    ]
+  },
+  {
+    day:15, phase:'classical', theme:'KNN, SVM & Clustering', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['KNN distance metrics','SVM kernels','decision boundaries','KMeans','DBSCAN','silhouette score','elbow method','cluster labels as features'],
+    objectives:[
+      'Implement KNN and explain how the choice of k and distance metric affects performance',
+      'Train an SVM with RBF kernel and understand what the kernel trick enables',
+      'Apply KMeans and DBSCAN clustering and compare their behavior on non-convex data',
+      'Use cluster membership as an additional feature for a supervised model'
+    ],
+    coreConcepts:'KNN classifies a point by the majority vote of its k nearest neighbors. Distance metric matters: Euclidean assumes equal feature scales (standardize first). Manhattan is more robust to outliers. Choice of k: small k = noisy boundary, large k = overly smooth. SVMs find the maximum margin hyperplane. The kernel trick maps data into higher-dimensional space where it becomes linearly separable, without computing that space explicitly. RBF kernel: exp(-γ||x-z||²) — makes almost any boundary possible. γ controls how far each training example\'s influence reaches; C controls margin rigidity. KMeans partitions data into k clusters by minimizing within-cluster variance. DBSCAN finds clusters by density — it can find non-convex shapes and marks outliers as noise. Silhouette score measures cluster cohesion vs separation (-1 to 1, higher is better).',
+    activities:[
+      'Train KNN on the customer dataset with k=3, 10, 20, 50; plot decision boundary for 2 features',
+      'Train SVM with linear, poly, and RBF kernels; compare decision boundaries and AUC',
+      'Apply KMeans with k=2 to 10; plot elbow curve (inertia) and silhouette scores',
+      'Apply DBSCAN on a dataset with non-convex clusters; visualize results',
+      'Add KMeans cluster label (k=4) as a feature to the supervised churn model; measure AUC change'
+    ],
+    challenge:'You are given an unlabeled dataset of retail customers. Use clustering to discover natural customer segments. For each cluster, write a business-level profile: "Cluster 2: high-frequency, low-value buyers — potential for upsell." Then use cluster assignments as features in a churn model and demonstrate whether they improve AUC.',
+    reflection:[
+      'If KNN uses Euclidean distance on a dataset with age (0-80) and income (0-200,000), what will happen without standardization?',
+      'The SVM kernel trick maps data to a higher-dimensional space. Why is this computationally efficient despite the higher dimensionality?',
+      'DBSCAN has no k parameter but it has eps and min_samples. How would you choose these in practice?',
+      'Your KMeans silhouette score is 0.3. Is this good or bad? What factors affect this number beyond cluster quality?',
+      'Why might adding cluster labels as features to a supervised model help? When might it hurt?'
+    ],
+    milestone:'Mini-Project 7 (Days 11–15): Complete ML model comparison study. Train and evaluate Logistic Regression, Random Forest, XGBoost, SVM, and KNN on the churn dataset using identical StratifiedKFold CV. Include a results table, learning curves, and a recommendation for deployment with justification.',
+    resources:[
+      {type:'Video', text:'\"Support Vector Machines\" — StatQuest (clear visual explanation)'},
+      {type:'Article', text:'\"k-Means vs DBSCAN\" — Towards Data Science'},
+      {type:'Docs', text:'sklearn.cluster module — KMeans, DBSCAN, AgglomerativeClustering'},
+      {type:'Book', text:'Pattern Recognition and Machine Learning — Bishop (Chapter 9, clustering)'},
+      {type:'Article', text:'\"Cluster Analysis for Customer Segmentation\" — Towards Data Science'}
+    ],
+    dataset:{name:'Retail Customer Behavior', source:'Synthetic (Python)',
+      desc:'3,500 customers: annual_spend, visit_frequency, avg_basket_size, product_diversity, online_share, loyalty_tenure, region. No target — unsupervised first, then add churn label for Part 2.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(66)\nn=3500\ndf=pd.DataFrame({"annual_spend":np.random.lognormal(7,1,n),"visit_frequency":np.random.poisson(15,n),"avg_basket_size":np.random.exponential(45,n),"product_diversity":np.random.randint(1,20,n),"online_share":np.random.beta(2,3,n),"loyalty_tenure_months":np.random.randint(1,84,n),"region":np.random.choice(["North","South","East","West"],n)})\ndf["churned"]=((df["visit_frequency"]<5)&(np.random.rand(n)<0.6)|(np.random.rand(n)<0.05)).astype(int)\ndf.to_csv("day15_customers.csv",index=False)'},
+    deliverables:['Jupyter notebook: day15_knn_svm_clustering.ipynb','Cluster profile report (Markdown)','AUC comparison: model without clusters vs with cluster features','Elbow curve and silhouette plot'],
+    readmeQuestions:[
+      'Which clustering algorithm better captured the customer segment structure? Why?',
+      'Did adding cluster labels as features improve churn prediction AUC?',
+      'Which business segment description would you present to the marketing team, and what action does it suggest?'
+    ],
+    skillIntegration:['Python','Pandas','NumPy','Scikit-learn','Matplotlib'],
+    successCriteria:[
+      'Both KMeans and DBSCAN applied and compared',
+      'Cluster profiles written in business language',
+      'AUC measured with and without cluster features',
+      'SVM kernel comparison completed'
+    ]
+  },
+  {
+    day:16, phase:'prod-ml', theme:'Explainability & SHAP', artifact:'tabular', difficulty:'Advanced',
+    concepts:['SHAP values','TreeExplainer','force plots','summary plots','LIME','global vs local explanations','feature interaction effects','waterfall plots'],
+    objectives:[
+      'Compute SHAP values for a tree model and interpret them at the individual prediction level',
+      'Distinguish between global feature importance and local SHAP explanation',
+      'Build a force plot and waterfall plot that could be shown to a business stakeholder',
+      'Understand why SHAP values are theoretically superior to mean decrease impurity importance'
+    ],
+    coreConcepts:'SHAP (SHapley Additive exPlanations) decomposes a prediction into the contribution of each feature. A SHAP value of +0.8 for "credit_score" means that feature pushed the prediction 0.8 log-odds toward the positive class. SHAP values satisfy three key properties: local accuracy (they sum to the prediction), consistency (a more important feature gets a higher SHAP), and efficiency. TreeExplainer computes exact SHAP values for tree models in O(TLD²) time (T=trees, L=leaves, D=depth). Summary plots show SHAP distribution for all features — both importance and direction in one view. Force plots show a single prediction decomposed into pushing/pulling features. Waterfall plots show the step-by-step path from expected value to final prediction. Mean decrease impurity (sklearn feature_importance_) overcounts features with high cardinality and is misleading for correlated features — SHAP fixes both.',
+    activities:[
+      'Train your best XGBoost churn model; run shap.TreeExplainer; compute shap_values for X_test',
+      'Create a SHAP summary plot; identify which features have the most directional (positive/negative) effect',
+      'Select 3 individual predictions (one TP, one FP, one FN); create waterfall plots for each',
+      'Create a force plot showing 50 test predictions sorted by prediction probability',
+      'Compare SHAP importance to feature_importance_ from XGBoost; identify 3 disagreements and explain them'
+    ],
+    challenge:'A customer has been flagged as high churn risk (probability = 0.87). They complain that the decision is unfair. Build a SHAP-based explanation that (1) shows exactly which features drove this prediction, (2) proposes a "what if" scenario (e.g. "if contract type were annual, probability drops to 0.31"), and (3) is formatted as a one-page report suitable for a customer service agent.',
+    reflection:[
+      'SHAP values sum to the model output minus the expected output. What is the expected output in classification, and what does it represent?',
+      'A feature has SHAP = 0 for every prediction. Can it still have high feature_importance_ in the XGBoost model? How?',
+      'LIME computes local approximations. How is this fundamentally different from what SHAP computes? Which is more theoretically justified?',
+      'You have a SHAP value of -1.2 for age=22. Interpret this in plain English.',
+      'Why might SHAP interaction values be more useful than main effects for a marketing attribution use case?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Library', text:'shap — pip install shap (github.com/slundberg/shap)'},
+      {type:'Paper', text:'\"A Unified Approach to Interpreting Model Predictions\" — Lundberg & Lee (2017)'},
+      {type:'Article', text:'\"SHAP Values Explained\" — Towards Data Science'},
+      {type:'Video', text:'\"SHAP Tutorial\" — Christoph Molnar (YouTube)'},
+      {type:'Book', text:'Interpretable Machine Learning — Christoph Molnar (free online: christophm.github.io)'}
+    ],
+    dataset:{name:'Telco Churn + Loans (combined)', source:'day12 + day11 datasets',
+      desc:'Use the best model trained on the churn dataset. SHAP explanation is the focus, not a new dataset. Supplement with the loan default dataset for a second SHAP analysis.',
+      code:'# Reuse day12_telco_churn.csv and day11_loans.csv\n# No new data generation needed.'},
+    deliverables:['Jupyter notebook: day16_shap.ipynb','SHAP summary plot (saved as PNG)','3 waterfall plots for TP/FP/FN cases','One-page customer explanation report (Markdown)'],
+    readmeQuestions:[
+      'Which feature had the most consistent directional SHAP effect, and does that make business sense?',
+      'Where did SHAP importance disagree with XGBoost feature_importance_, and what explains the difference?',
+      'Could a non-technical stakeholder understand your waterfall plot explanation? What would you change?'
+    ],
+    skillIntegration:['Python','Pandas','XGBoost','SHAP','Matplotlib'],
+    successCriteria:[
+      'SHAP TreeExplainer correctly applied to test set',
+      'Summary plot, force plot, and waterfall plot all produced',
+      'Business-readable explanation written without ML jargon',
+      'SHAP vs feature_importance_ comparison completed'
+    ]
+  },
+  {
+    day:17, phase:'deep', theme:'Neural Network Fundamentals', artifact:'tabular', difficulty:'Advanced',
+    concepts:['forward pass','backpropagation','activation functions','loss functions','gradient descent','vanishing gradient','batch size','epochs vs iterations'],
+    objectives:[
+      'Implement a 3-layer MLP from scratch in PyTorch and understand every line of code',
+      'Observe the vanishing gradient problem empirically by using sigmoid activations in a deep network',
+      'Explain what backpropagation is computing and why the chain rule is central to it',
+      'Compare ReLU vs Sigmoid vs Tanh activations on a classification task'
+    ],
+    coreConcepts:'A neural network is a composition of linear transformations (weight matrices) and non-linear activations. Forward pass: input → hidden → output, applying weights and activations at each layer. Loss function measures prediction error (cross-entropy for classification, MSE for regression). Backpropagation computes gradients of the loss with respect to every weight using the chain rule — propagating error backward through the network. Gradient descent updates weights: w = w - lr × gradient. ReLU (max(0,x)) solves vanishing gradient by having a constant gradient for positive inputs. Sigmoid squashes to (0,1) but has tiny gradients (< 0.25) everywhere — stacking sigmoids multiplies these small gradients, making deep networks unable to learn. Batch size: larger batches give more stable gradients but require more memory; smaller batches add noise that can help generalization.',
+    activities:[
+      'Build a 3-layer MLP in PyTorch for the insurance fraud dataset; train for 20 epochs; plot loss curve',
+      'Swap ReLU for sigmoid activations; add 5 more layers; observe gradient magnitudes during training',
+      'Implement gradient clipping (max_norm=1.0); observe training stability improvement',
+      'Experiment with batch sizes 32, 128, 512; plot training curves; compare convergence speed',
+      'Implement a custom PyTorch Dataset and DataLoader for your tabular data'
+    ],
+    challenge:'Build a PyTorch MLP for tabular churn prediction that outperforms your sklearn XGBoost pipeline from Day 13. Constraints: use a custom Dataset class, implement early stopping manually, log train/val loss every epoch. Compare final AUC and training time.',
+    reflection:[
+      'In backpropagation, what exactly is flowing backward through the network? Is it predictions, errors, or gradients?',
+      'Why does ReLU cause "dying neurons" and what is the Leaky ReLU designed to fix?',
+      'If you increase batch size by 8x, what should you do to the learning rate to maintain training stability?',
+      'What is the difference between an epoch and an iteration in neural network training?',
+      'Explain why weight initialization matters. What happens if you initialize all weights to zero?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Docs', text:'PyTorch tutorials — pytorch.org/tutorials'},
+      {type:'Video', text:'\"Neural Networks\" — 3Blue1Brown (4-part series, YouTube)'},
+      {type:'Video', text:'\"Backpropagation Calculus\" — 3Blue1Brown'},
+      {type:'Book', text:'Deep Learning — Goodfellow, Bengio, Courville (free online at deeplearningbook.org)'},
+      {type:'Platform', text:'fast.ai Practical Deep Learning — course.fast.ai (free)'}
+    ],
+    dataset:{name:'Fraud Detection (PyTorch)', source:'day04_fraud.csv',
+      desc:'Reuse the fraud dataset from Day 4. Now treated as a deep learning classification problem. Focus is on PyTorch architecture, not new data.',
+      code:'# Reuse day04_fraud.csv\n# Focus: implement PyTorch Dataset and DataLoader\nfrom torch.utils.data import Dataset, DataLoader\nimport torch\nclass FraudDataset(Dataset):\n    def __init__(self, X, y):\n        self.X = torch.FloatTensor(X)\n        self.y = torch.FloatTensor(y)\n    def __len__(self): return len(self.y)\n    def __getitem__(self, i): return self.X[i], self.y[i]'},
+    deliverables:['Jupyter notebook: day17_pytorch_mlp.ipynb','Training + validation loss curve plots','Activation comparison table (ReLU vs Sigmoid vs Tanh)','Custom Dataset class: fraud_dataset.py'],
+    readmeQuestions:[
+      'What evidence did you observe of the vanishing gradient problem with sigmoid activations?',
+      'Did your MLP outperform XGBoost on this tabular dataset? What does this suggest about deep learning for tabular data?',
+      'What batch size worked best, and how did it affect training stability?'
+    ],
+    skillIntegration:['Python','PyTorch','NumPy','Matplotlib'],
+    successCriteria:[
+      'Custom Dataset and DataLoader implemented and working',
+      'Vanishing gradient observed empirically (gradient magnitudes < 1e-5 in early layers)',
+      'Training and validation loss curves plotted',
+      'AUC comparison between MLP and XGBoost completed'
+    ]
+  },
+  {
+    day:18, phase:'deep', theme:'Optimizers & Regularization', artifact:'tabular', difficulty:'Advanced',
+    concepts:['SGD vs Adam vs RMSProp','learning rate schedules','dropout','batch normalization','L2 in neural nets','early stopping','weight initialization (Xavier/He)'],
+    objectives:[
+      'Compare Adam, SGD with momentum, and RMSProp on the same network; interpret the loss curves',
+      'Implement dropout and batch normalization and observe their regularization effects',
+      'Apply learning rate scheduling (cosine annealing, reduce on plateau) and explain the intuition',
+      'Use Xavier/He initialization and verify it stabilizes training in deep networks'
+    ],
+    coreConcepts:'SGD with momentum accumulates velocity — it moves faster in consistent gradient directions. Adam tracks both first and second moments (mean and variance of gradients), adapting the learning rate per parameter. Adam converges faster but may generalize slightly worse than well-tuned SGD. Learning rate is the most important hyperparameter: too high = diverging loss; too low = never converges. Dropout randomly zeros neurons during training, forcing the network to learn redundant representations — equivalent to training an ensemble. Batch normalization normalizes layer inputs to zero mean and unit variance, stabilizing training and allowing higher learning rates. Xavier initialization sets variance = 1/n_in (for tanh); He initialization sets variance = 2/n_in (for ReLU). Wrong initialization causes exploding or vanishing gradients from the first forward pass.',
+    activities:[
+      'Train the same MLP with SGD (lr=0.01, momentum=0.9), Adam (lr=1e-3), and RMSProp; plot loss curves on one chart',
+      'Add dropout (p=0.3) after each hidden layer; compare train vs val loss divergence with and without',
+      'Add batch normalization before each activation; compare training speed and final AUC',
+      'Implement ReduceLROnPlateau and CosineAnnealingLR schedulers; compare their loss curves',
+      'Compare Xavier vs He vs random normal initialization in a 10-layer network; plot gradient norms per layer at initialization'
+    ],
+    challenge:'You are training a 6-layer MLP for credit default prediction and the validation loss starts rising after epoch 12. Diagnose the problem and apply the minimum number of regularization techniques needed to fix it. Document your debugging process: what you tried, what helped, what did not.',
+    reflection:[
+      'Adam adapts learning rates per parameter. Why does this sometimes lead to worse generalization than SGD?',
+      'Batch normalization is applied during training but behaves differently during inference. What changes and why?',
+      'You apply dropout with p=0.5 and your training loss is much higher than without dropout. Is this a problem?',
+      'Explain the intuition behind cosine annealing: why does cycling the learning rate help escape local minima?',
+      'What is gradient clipping and when is it necessary? What pathology does it address?'
+    ],
+    milestone:'Mini-Project 8 (Days 17–18): Build the best possible PyTorch MLP for churn prediction. Systematically compare: 3 optimizers, 2 regularization strategies, 2 LR schedules. Use MLflow (preview of Day 26) to track all experiments. Deliver a hyperparameter comparison table.',
+    resources:[
+      {type:'Paper', text:'Adam: A Method for Stochastic Optimization — Kingma & Ba (2014)'},
+      {type:'Article', text:'\"Why Momentum Really Works\" — distill.pub'},
+      {type:'Docs', text:'torch.optim — PyTorch optimizer documentation'},
+      {type:'Video', text:'\"Regularization for Deep Learning\" — deeplearning.ai (Coursera)'},
+      {type:'Article', text:'\"Weight Initialization in Neural Networks\" — Towards Data Science'}
+    ],
+    dataset:{name:'Credit Default (Neural Net version)', source:'day05_credit.csv',
+      desc:'Reuse the credit default dataset. Focus: regularization ablation study. Goal is to demonstrate overfitting and fix it with systematic regularization.',
+      code:'# Reuse day05_credit.csv\n# Focus on building and debugging the MLP training loop.'},
+    deliverables:['Jupyter notebook: day18_optimizers_regularization.ipynb','Optimizer comparison chart (3 loss curves on one plot)','Regularization ablation table (dropout, batchnorm, both, neither)','Debugging journal (Markdown): what went wrong and how you fixed it'],
+    readmeQuestions:[
+      'Which optimizer performed best on this dataset, and what does the loss curve tell you about why?',
+      'Did batch normalization help, hurt, or have no effect? What does this suggest?',
+      'Describe your regularization debugging process step by step.'
+    ],
+    skillIntegration:['Python','PyTorch','MLflow','Matplotlib'],
+    successCriteria:[
+      'All three optimizers compared on same architecture and data',
+      'Dropout and batch normalization implemented correctly',
+      'LR scheduler applied and its effect visible in loss curve',
+      'Overfitting episode demonstrated and resolved'
+    ]
+  },
+  {
+    day:19, phase:'deep', theme:'CNN & RNN Intuition', artifact:'tabular', difficulty:'Advanced',
+    concepts:['convolution intuition','1D CNN for time series','pooling','receptive field','LSTM/GRU','sequence modeling','embedding layers','transfer learning intuition'],
+    objectives:[
+      'Apply a 1D CNN to time-series data and understand what the convolutional filters learn',
+      'Compare LSTM vs GRU vs 1D CNN on the same sequential dataset',
+      'Implement an embedding layer for categorical IDs and understand its relationship to one-hot encoding',
+      'Explain transfer learning conceptually and identify when it applies to your use cases'
+    ],
+    coreConcepts:'A 1D convolution slides a kernel of size k along a sequence, computing a dot product at each position. This detects local patterns — a kernel might learn "spike followed by decay." Pooling reduces dimensionality while preserving the dominant signal. Receptive field: how much of the original sequence one unit "sees." LSTMs solve the vanishing gradient problem for sequences using gates: forget (what to erase), input (what to add), output (what to expose). GRUs simplify LSTMs to two gates — faster and often equally effective. Embedding layers map integer IDs to dense vectors — they are trainable lookup tables. Each category becomes a point in a learned embedding space where similar categories cluster. Transfer learning: reuse weights pretrained on a large dataset, replace the final layer, and fine-tune on your smaller dataset — the pretrained features are often highly transferable.',
+    activities:[
+      'Build a 1D CNN in PyTorch for the time-series subscription dataset; visualize what the first-layer filters learn',
+      'Build an LSTM and a GRU for the same task; compare training time, AUC, and overfitting behavior',
+      'Add an embedding layer for user_id (map 1500 users to 16-dim vectors); observe learned user representations',
+      'Create a 2D scatter plot of user embeddings using t-SNE; identify clusters of similar user behavior',
+      'Compare 1D CNN vs LSTM vs GRU in a results table; include training time and final AUC'
+    ],
+    challenge:'You have daily stock price data (Open, High, Low, Close, Volume) for 100 stocks over 3 years. Build a sequence model that predicts whether the closing price will be higher tomorrow. Compare 1D CNN vs LSTM. Which is faster? Which has better AUC? Which is more robust to the sequence length used?',
+    reflection:[
+      'A 1D convolutional filter of size 7 slides over a sequence of 100 timesteps. How many positions does it evaluate, and what does each position represent?',
+      'LSTMs have a "forget gate." What happens to long-term patterns in your sequence if the forget gate learns to always output 1?',
+      'Why are embedding layers mathematically equivalent to one-hot encoding followed by a weight matrix? What does this mean about their expressiveness?',
+      'You are training an LSTM with sequences of length 200. What problem might you encounter, and what two techniques address it?',
+      'Explain why 1D CNNs are often faster and more stable than LSTMs for sequences of length < 100.'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Article', text:'\"The Unreasonable Effectiveness of RNNs\" — Andrej Karpathy'},
+      {type:'Video', text:'\"Understanding LSTM Networks\" — Christopher Olah (distill.pub/blog)'},
+      {type:'Docs', text:'torch.nn.Conv1d and torch.nn.LSTM — PyTorch documentation'},
+      {type:'Article', text:'\"CNNs for Time Series\" — Towards Data Science'},
+      {type:'Book', text:'Deep Learning with Python — François Chollet (Chapter 10, sequences)'}
+    ],
+    dataset:{name:'Time Series Subscription Events (extended)', source:'day14_timeseries.csv + Stock data',
+      desc:'Extend Day 14 time-series dataset into sequences per user (last 30 days → predict next week). Also generate synthetic stock OHLCV data for the challenge.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(19)\n# Stock data\nstocks=100; days=756\nprices=np.cumprod(1+np.random.normal(0.0002,0.015,(days,stocks)),axis=0)*100\ndf=pd.DataFrame(prices,columns=[f"stock_{i:03d}" for i in range(stocks)])\ndf["day"]=range(days)\ndf.to_csv("day19_stocks.csv",index=False)'},
+    deliverables:['Jupyter notebook: day19_cnn_rnn.ipynb','1D CNN vs LSTM vs GRU comparison table','User embedding t-SNE scatter plot','Stock prediction experiment results'],
+    readmeQuestions:[
+      'For your sequence task, which architecture performed best? What in the data structure explains this?',
+      'What did the t-SNE plot of user embeddings reveal about user behavior segments?',
+      'At what sequence length does LSTM start to outperform 1D CNN on your stock dataset?'
+    ],
+    skillIntegration:['Python','PyTorch','NumPy','Matplotlib'],
+    successCriteria:[
+      '1D CNN, LSTM, and GRU all implemented and compared',
+      'Embedding layer implemented for categorical ID column',
+      't-SNE visualization of learned embeddings produced',
+      'Comparison table includes training time, AUC, and memory usage'
+    ]
+  },
+  {
+    day:20, phase:'nlp', theme:'Text Preprocessing & Classical NLP', artifact:'text', difficulty:'Intermediate',
+    concepts:['tokenization','stopword removal','stemming vs lemmatization','bag of words','TF-IDF','n-grams','text normalization','CountVectorizer','TfidfVectorizer'],
+    objectives:[
+      'Build a TF-IDF + Logistic Regression text classifier and evaluate its performance',
+      'Compare stemming vs lemmatization and explain when each is more appropriate',
+      'Inspect the top TF-IDF features per class to understand what the model has learned',
+      'Understand when classical NLP is sufficient and when you need transformers'
+    ],
+    coreConcepts:'Tokenization splits text into tokens (words or subwords). Stopword removal drops high-frequency, low-information words ("the", "is"). Stemming chops word endings crudely (running → run); lemmatization uses dictionary knowledge to find root forms (better → good). Bag of Words: each document becomes a vector of word counts — fast but ignores order. TF-IDF (Term Frequency-Inverse Document Frequency): weights words by how often they appear in a document relative to how common they are across all documents. Rare words that appear frequently in one document get high TF-IDF — they are likely distinctive. N-grams: bigrams ("machine learning"), trigrams ("support vector machine") capture phrase-level meaning. Classical NLP (TF-IDF + LR) is still competitive with transformers for short text classification, and is 100x faster.',
+    activities:[
+      'Load the news headline dataset; apply tokenization, lowercasing, and stopword removal; inspect the vocab',
+      'Compare stemming (PorterStemmer) vs lemmatization (WordNetLemmatizer) on 20 example headlines',
+      'Build TF-IDF vectorizer (max_features=10000, ngram_range=(1,2)); fit LogisticRegression; evaluate',
+      'Inspect top 20 TF-IDF features per news category; verify they make semantic sense',
+      'Compare unigrams vs bigrams vs trigrams on classification accuracy; plot results'
+    ],
+    challenge:'You are given 50,000 e-commerce product reviews (1-5 stars). Build a sentiment classifier that maps reviews to positive (4-5 stars) vs negative (1-2 stars) using only TF-IDF features. Achieve > 88% accuracy. Then deliberately identify 10 examples where the model fails and write a one-paragraph analysis of why.',
+    reflection:[
+      'TF-IDF gives a high weight to words that are rare across documents. When would this be misleading for classification?',
+      'Stopword removal removes "not." Why is this a problem for sentiment analysis? How would you fix it?',
+      'Explain the difference between a vocabulary size of 1,000 and 100,000 in terms of model expressiveness and overfitting risk.',
+      'Your TF-IDF + LR model achieves 89% accuracy. A BERT model achieves 91%. When would you deploy the TF-IDF model anyway?',
+      'What information does the bag-of-words representation lose that a human reader would use?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Library', text:'nltk — pip install nltk (Natural Language Toolkit)'},
+      {type:'Library', text:'spaCy — pip install spacy (faster, production-grade)'},
+      {type:'Docs', text:'sklearn.feature_extraction.text — TfidfVectorizer, CountVectorizer'},
+      {type:'Article', text:'\"TF-IDF from Scratch\" — Towards Data Science'},
+      {type:'Video', text:'\"Natural Language Processing\" — StatQuest'}
+    ],
+    dataset:{name:'BBC News Headlines', source:'Kaggle: BBC News Category Dataset',
+      desc:'2,225 BBC news articles across 5 categories: business, entertainment, politics, sport, tech. Perfect for TF-IDF classification.',
+      code:'# Download: https://www.kaggle.com/datasets/shivamkushwaha/bbc-full-text-document-classification\n# Synthetic alternative:\nimport pandas as pd, numpy as np\nnp.random.seed(20)\ncategories={"tech":["software","hardware","internet","AI","chip","data","code"],"sport":["goal","match","team","player","win","tournament","score"],"business":["market","stock","revenue","company","profit","trade","economy"],"politics":["government","election","minister","vote","policy","bill","parliament"],"entertainment":["film","music","award","actor","celebrity","concert","release"]}\nrows=[]\nfor cat,words in categories.items():\n    for _ in range(445):\n        n_words=np.random.randint(20,100)\n        headline=" ".join(np.random.choice(words+["the","a","is","in","on","of"],n_words))\n        rows.append({"text":headline,"category":cat})\ndf=pd.DataFrame(rows).sample(frac=1,random_state=20).reset_index(drop=True)\ndf.to_csv("day20_news.csv",index=False)'},
+    deliverables:['Jupyter notebook: day20_tfidf_nlp.ipynb','Top TF-IDF features per class (bar chart)','N-gram comparison table (accuracy by ngram_range)','Error analysis report: 10 misclassified examples with explanation'],
+    readmeQuestions:[
+      'Which bigrams were most discriminative for each news category?',
+      'Where did your TF-IDF model fail most consistently, and what NLP capability would fix it?',
+      'How would you deploy this text classifier as a real-time API?'
+    ],
+    skillIntegration:['Python','Pandas','Scikit-learn','NLTK/spaCy','Matplotlib'],
+    successCriteria:[
+      'TF-IDF + LR pipeline achieves > 85% accuracy on validation set',
+      'Top features per class extracted and visually inspected',
+      'N-gram comparison shows effect of phrase-level features',
+      'Error analysis provides actionable insights'
+    ]
+  },
+  {
+    day:21, phase:'nlp', theme:'Embeddings & Semantic Similarity', artifact:'text', difficulty:'Advanced',
+    concepts:['word2vec intuition','sentence transformers','cosine similarity','FAISS nearest neighbor','document classification with embeddings','zero-shot classification'],
+    objectives:[
+      'Generate sentence embeddings using a small pretrained sentence transformer',
+      'Build a cosine similarity search over a document corpus',
+      'Compare TF-IDF similarity vs embedding similarity on the same queries',
+      'Implement a simple document classifier using embedding features + logistic regression'
+    ],
+    coreConcepts:'Word2Vec trains a neural network to predict words from context (or vice versa). Nearby words in the embedding space have similar meanings. Sentence transformers extend this to full sentences: all-MiniLM-L6-v2 encodes a sentence to a 384-dim vector in ~5ms. Cosine similarity measures the angle between vectors: similar texts point in similar directions. FAISS (Facebook AI Similarity Search) builds an index for fast approximate nearest neighbor search over millions of vectors. Zero-shot classification: encode both the query and possible class labels, then pick the class whose embedding is closest — no training data needed. Embeddings vs TF-IDF: embeddings capture semantic meaning (cat ≈ dog), TF-IDF captures vocabulary overlap. For short queries, TF-IDF is often competitive; for paraphrase detection or cross-lingual similarity, embeddings are essential.',
+    activities:[
+      'Load sentence-transformers (all-MiniLM-L6-v2); encode the news headline corpus; measure encoding time',
+      'Build a cosine similarity search: given a query headline, find the 5 most similar headlines',
+      'Compare TF-IDF cosine similarity vs embedding cosine similarity on 10 test queries; judge which is better',
+      'Use embedding features (384 dims) + LogisticRegression for news category classification; compare AUC to Day 20',
+      'Build a zero-shot classifier for 3 news categories using only embedding similarity — no training labels used'
+    ],
+    challenge:'Build a semantic duplicate detection system for the news dataset. Goal: find all pairs of headlines that convey the same news story but use different wording. A TF-IDF approach will fail on paraphrases. Use FAISS with sentence embeddings to find candidate near-duplicates (cosine similarity > 0.92). Report how many pairs you found and show 5 examples.',
+    reflection:[
+      'Cosine similarity measures angle, not distance. Two documents can be very different lengths but have cosine similarity = 1. When is this desirable, and when is it misleading?',
+      'A sentence transformer encodes "bank of the river" and "bank account" to similar vectors. Is this good or bad? How would you detect this?',
+      'Zero-shot classification works by comparing query to class label embeddings. What happens when your class labels are ambiguous?',
+      'FAISS uses approximate nearest neighbor search. What is the tradeoff between index type and recall vs speed?',
+      'Embedding dimension is 384 in all-MiniLM-L6-v2. What happens to downstream model performance if you PCA-reduce to 32 dimensions?'
+    ],
+    milestone:'Mini-Project 9 (Days 20–21): Build a news article recommendation engine. Given a user\'s reading history (5 articles), recommend 10 new articles using both TF-IDF similarity and embedding similarity. Compare the two approaches on diversity and relevance. Present results as a mock "For You" feed.',
+    resources:[
+      {type:'Library', text:'sentence-transformers — pip install sentence-transformers'},
+      {type:'Library', text:'faiss-cpu — pip install faiss-cpu'},
+      {type:'Docs', text:'SBERT (Sentence-BERT) documentation — sbert.net'},
+      {type:'Video', text:'\"Word Embeddings\" — StatQuest'},
+      {type:'Article', text:'\"Sentence Transformers: Semantically Similar Texts\" — Towards Data Science'}
+    ],
+    dataset:{name:'BBC News + Extended Corpus', source:'day20_news.csv + paraphrase pairs',
+      desc:'Extend the news dataset with 200 manually created paraphrase pairs for the duplicate detection challenge.',
+      code:'# Reuse day20_news.csv\n# Paraphrase pairs:\nparaphrases=[{"text1":"Scientists discover new planet in solar system","text2":"New planet found by astronomers in our solar neighborhood","is_duplicate":1},{"text1":"Stock market reaches record high","text2":"Equities hit all-time peak as investors celebrate","is_duplicate":1},{"text1":"Team wins championship","text2":"Weather forecast shows rain tomorrow","is_duplicate":0}]\npd.DataFrame(paraphrases).to_csv("day21_paraphrases.csv",index=False)'},
+    deliverables:['Jupyter notebook: day21_embeddings.ipynb','TF-IDF vs embedding similarity comparison table','FAISS duplicate detection results (5 example pairs)','Recommendation engine demo (10 articles per user history)'],
+    readmeQuestions:[
+      'On which types of queries did embeddings outperform TF-IDF? On which did TF-IDF win?',
+      'How many near-duplicate pairs did your FAISS index find, and how many were true duplicates?',
+      'What latency difference did you observe between TF-IDF search and FAISS embedding search?'
+    ],
+    skillIntegration:['Python','sentence-transformers','FAISS','Scikit-learn','Pandas'],
+    successCriteria:[
+      'Sentence embeddings generated for full corpus',
+      'Cosine similarity search working correctly',
+      'FAISS index built and queried',
+      'TF-IDF vs embedding comparison documented with examples'
+    ]
+  },
+  {
+    day:22, phase:'llm', theme:'Transformer & LLM Architecture Intuition', artifact:'text', difficulty:'Advanced',
+    concepts:['self-attention','multi-head attention','positional encoding','encoder vs decoder','context windows','tokenization at scale','KV cache','inference cost'],
+    objectives:[
+      'Explain self-attention in plain English and implement a simplified version from scratch',
+      'Calculate the memory and compute cost of running inference with a given context window',
+      'Understand the architectural difference between encoder models (BERT) and decoder models (GPT)',
+      'Measure real LLM API latency and token cost across different prompt lengths'
+    ],
+    coreConcepts:'Self-attention lets each token "look at" all other tokens in the sequence and weight their relevance. For token i, it computes Q (query), K (keys from all positions), V (values from all positions) → attention scores = softmax(QK^T/√d_k) → weighted sum of V. Multi-head attention runs this in parallel h times with different learned projections — each head learns different relationship types. Positional encoding injects position information since attention is order-agnostic. Encoders (BERT) use bidirectional attention — each token sees all others — best for classification and understanding. Decoders (GPT) use causal attention — each token only sees tokens to its left — required for generation. Context window: transformers can only attend to the last N tokens. KV cache: during generation, stores past key/value computations — makes autoregressive generation fast. Inference cost: O(n²) in context length for attention. A 128K context window is expensive.',
+    activities:[
+      'Implement scaled dot-product attention from scratch in PyTorch (20 lines); test on a toy example',
+      'Call the OpenAI or Anthropic API with prompts of length 100, 500, 2000, 8000 tokens; measure latency',
+      'Calculate the per-request cost for each prompt length at current pricing; build a cost model',
+      'Compare BERT (encoder) and GPT (decoder) token representations on the same sentence using huggingface',
+      'Implement a token counter for your use case; estimate monthly API cost for 100K requests/day'
+    ],
+    challenge:'You are building an LLM-powered document summarizer. The business wants to process 1 million documents per month, each averaging 3,000 tokens. Calculate: (1) total input tokens per month, (2) estimated API cost at current pricing, (3) whether a self-hosted open-source model (Llama 3) would be more cost-effective at your scale. Write a cost-benefit analysis.',
+    reflection:[
+      'Attention complexity is O(n²) where n is sequence length. What does this mean for a 1-million-token context window?',
+      'Why does a decoder model (GPT) use causal masking? What would happen without it?',
+      'Explain the KV cache. Without it, how many times would the model recompute the attention of the first token during 100-token generation?',
+      'BERT and GPT use the same attention mechanism. What architectural difference makes BERT better for classification?',
+      'A model has 7 billion parameters. Each parameter is stored as float16 (2 bytes). How much GPU memory does the model need just to load?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Article', text:'\"The Illustrated Transformer\" — Jay Alammar (jalammar.github.io) — essential reading'},
+      {type:'Article', text:'\"Attention Is All You Need\" — Vaswani et al. 2017 (original paper)'},
+      {type:'Video', text:'\"Transformers from Scratch\" — Andrej Karpathy (nanoGPT walkthrough)'},
+      {type:'Library', text:'transformers — pip install transformers (huggingface.co)'},
+      {type:'Docs', text:'OpenAI API tokenizer + pricing — platform.openai.com/tokenizer'}
+    ],
+    dataset:{name:'Document Summarization Corpus', source:'Synthetic + CNN/DailyMail subset',
+      desc:'200 news articles of varying lengths (500-4000 tokens). Good for tokenization experiments and API cost calculations.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(22)\ntemplates=["The {org} announced today that {action}. Sources say {detail}. This comes after {context}. Analysts expect {outcome}."]\norgs=["company","government","university","hospital"]\nrows=[]\nfor i in range(200):\n    length=np.random.randint(2,10)\n    text=" ".join([t.format(org=np.random.choice(orgs),action="significant changes",detail="internal review",context="long negotiations",outcome="major impact") for t in templates*length])\n    rows.append({"doc_id":i,"text":text,"word_count":len(text.split())})\npd.DataFrame(rows).to_csv("day22_docs.csv",index=False)'},
+    deliverables:['Jupyter notebook: day22_transformer_intuition.ipynb','Attention implementation (attention.py)','API latency vs prompt length chart','Cost model spreadsheet (CSV or DataFrame)'],
+    readmeQuestions:[
+      'At what prompt length does API latency become a user-experience problem for your use case?',
+      'How does the KV cache change the cost structure of multi-turn vs single-turn API calls?',
+      'For your 1-million-document use case, which approach is more cost-effective: API or self-hosted?'
+    ],
+    skillIntegration:['Python','PyTorch','HuggingFace','API integration'],
+    successCriteria:[
+      'Scaled dot-product attention implemented from scratch and verified',
+      'API latency measured across at least 4 prompt lengths',
+      'Cost model built with realistic assumptions',
+      'Encoder vs decoder difference demonstrated with code'
+    ]
+  },
+  {
+    day:23, phase:'llm', theme:'Prompt Engineering & Structured Outputs', artifact:'text', difficulty:'Advanced',
+    concepts:['zero-shot vs few-shot','chain-of-thought','system prompts','JSON mode','temperature/top-p','hallucination patterns','prompt injection','output validation'],
+    objectives:[
+      'Implement zero-shot, few-shot, and chain-of-thought prompting and measure accuracy differences',
+      'Extract structured JSON output from unstructured text using JSON mode with schema validation',
+      'Measure output variance across 10 repeated runs at different temperatures',
+      'Build a prompt that consistently produces valid, parseable output and handles edge cases'
+    ],
+    coreConcepts:'Zero-shot: describe the task only. Few-shot: provide 3–5 examples before asking. Chain-of-thought: instruct the model to "think step by step" — dramatically improves multi-step reasoning. System prompts set the model\'s role and constraints; they are processed before user input. JSON mode forces output to be valid JSON — but the schema is yours to enforce with Pydantic. Temperature controls randomness: 0 = near-deterministic (greedy decoding), 1 = high diversity. Top-p (nucleus sampling) only samples from the smallest set of tokens whose cumulative probability exceeds p. Hallucination: models generate plausible-sounding but false information. Mitigation: retrieval-augment, ask for citations, use structured output with validation. Prompt injection: malicious text in user input that overrides your system prompt.',
+    activities:[
+      'Build 3 prompts for a named-entity extraction task: zero-shot, 3-shot, and CoT; compare F1 scores',
+      'Extract structured customer complaint data (product, issue, severity) from 50 raw emails using JSON mode',
+      'Validate extracted JSON against a Pydantic schema; count validation failures',
+      'Run the same prompt 10 times at temperature=0, 0.5, 1.0; measure output variance (% identical)',
+      'Implement a retry-with-fallback mechanism: if JSON validation fails, retry with a more explicit prompt'
+    ],
+    challenge:'You have 1,000 unstructured customer support emails. Build a production-grade extraction pipeline that: (1) classifies each email into one of 8 categories, (2) extracts structured metadata (urgency, product, issue type), (3) validates all outputs against a schema, (4) handles failures gracefully with a fallback. Report precision of extraction vs human labels on 50 manually annotated examples.',
+    reflection:[
+      'Temperature = 0 does not guarantee identical outputs every run. Why not?',
+      'Explain why few-shot examples should be diverse rather than similar to each other.',
+      'A prompt says "Do not include any information not in the document." Does this prevent hallucination? What does it actually do?',
+      'Prompt injection attacks trick the model into ignoring your system prompt. Give a concrete example of how this could fail in a production customer support application.',
+      'JSON mode produces valid JSON but your Pydantic schema still fails validation. Give 3 reasons this could happen.'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Guide', text:'Prompt Engineering Guide — promptingguide.ai (comprehensive, free)'},
+      {type:'Article', text:'\"Chain-of-Thought Prompting Elicits Reasoning\" — Wei et al. 2022'},
+      {type:'Library', text:'instructor — pip install instructor (structured outputs with Pydantic)'},
+      {type:'Library', text:'pydantic — pip install pydantic (schema validation)'},
+      {type:'Article', text:'\"Prompt Injection Attacks\" — Simon Willison\'s blog'}
+    ],
+    dataset:{name:'Customer Support Emails', source:'Synthetic (Python)',
+      desc:'1,000 synthetic customer emails covering 8 product categories (SaaS, hardware, shipping, billing, etc.) with ground-truth labels for 50. Test structured extraction pipeline.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(23)\ntemplates=["I am writing about my {product}. The issue is {issue}. This is {urgency} priority. Order #{order}.","Hello, I need help with {product}. {issue} has been happening since yesterday. Please respond {urgency}.","Re: {product} - {issue}. My account number is #{order}. {urgency} situation."]\nproducts=["subscription","laptop","shipping","invoice","mobile app","cloud storage","support ticket","hardware"]\nissues=["not working","incorrect charge","delayed delivery","login failure","data loss","performance slow"]\nurgencies=["urgent","high","normal","low"]\nrows=[]\nfor i in range(1000):\n    t=np.random.choice(templates)\n    rows.append({"email_id":i,"text":t.format(product=np.random.choice(products),issue=np.random.choice(issues),urgency=np.random.choice(urgencies),order=np.random.randint(10000,99999))})\npd.DataFrame(rows).to_csv("day23_emails.csv",index=False)'},
+    deliverables:['Jupyter notebook: day23_prompt_engineering.ipynb','Zero-shot vs few-shot vs CoT accuracy table','Extraction pipeline: extract_email.py with Pydantic schema','Output variance analysis (temperature comparison chart)'],
+    readmeQuestions:[
+      'Which prompting technique gave the best accuracy/cost tradeoff?',
+      'What percentage of JSON outputs required retry, and what caused the failures?',
+      'How would you monitor prompt performance degradation in production?'
+    ],
+    skillIntegration:['Python','LLM APIs','Pydantic','Pandas'],
+    successCriteria:[
+      'All three prompting strategies implemented and compared numerically',
+      'Pydantic schema validates all extracted outputs',
+      'Retry mechanism handles failures gracefully',
+      'Temperature variance analysis completed'
+    ]
+  },
+  {
+    day:24, phase:'rag', theme:'RAG Foundations', artifact:'text', difficulty:'Advanced',
+    concepts:['chunking strategies','chunk overlap','chunk size effects','embedding models','cosine vs dot product','FAISS/Chroma','naive retrieval pipeline','context window budgeting'],
+    objectives:[
+      'Build a complete RAG pipeline from scratch: chunk → embed → index → retrieve → generate',
+      'Measure how chunk size affects retrieval precision on a set of test queries',
+      'Choose between FAISS and Chroma for a given use case and justify the choice',
+      'Implement the full RAG loop and measure end-to-end answer quality'
+    ],
+    coreConcepts:'RAG (Retrieval-Augmented Generation) grounds an LLM\'s answer in real documents. The pipeline: (1) Chunk documents into overlapping segments, (2) Embed each chunk with a sentence transformer, (3) Index embeddings in a vector store, (4) At query time: embed the query, retrieve top-k chunks, (5) Pass chunks + question to LLM. Chunking strategy is critical: too small = no context; too large = diluted signal. Overlap prevents answers from being split across chunk boundaries. FAISS is a flat in-memory index — exact or approximate search, fast, no persistence. Chroma adds persistence, metadata filtering, and a Python-native API. Cosine similarity normalizes vector magnitude; dot product does not. For normalized embeddings they are equivalent. Context window budgeting: you have ~4000 tokens for context; plan how many chunks × chunk_size fit.',
+    activities:[
+      'Build a document corpus (50 technical articles); chunk with sizes 128, 256, 512, 1024 tokens with 20% overlap',
+      'Embed all chunks with all-MiniLM-L6-v2; build FAISS indices for each chunk size',
+      'Create 20 test queries; retrieve top-5 chunks for each; manually score retrieval precision',
+      'Pass retrieved chunks to an LLM and generate answers; evaluate answer correctness on 20 queries',
+      'Re-implement with Chroma; add metadata filtering (filter by document source); compare to FAISS'
+    ],
+    challenge:'Build a RAG system over the last 12 months of your field\'s research papers (or a substitute corpus). Answer 10 domain-specific questions that require multi-document synthesis. Measure: retrieval precision@5, answer factual accuracy (manual check), and hallucination rate (claims not in retrieved chunks). Optimize chunk size to maximize answer quality.',
+    reflection:[
+      'Why does chunk size create a retrieval-generation tradeoff? What happens at each extreme?',
+      'If two chunks have cosine similarity 0.95, does this guarantee they are semantically similar? What could cause a false positive?',
+      'Explain "context window budgeting" in the context of RAG. What factors constrain how many chunks you can include?',
+      'You retrieve top-5 chunks but the answer is actually in chunk 6. How would you detect and fix this problem?',
+      'What is the difference between a vector store (FAISS/Chroma) and a traditional database index?'
+    ],
+    milestone:'Mini-Project 10 (Days 22–24): Build a complete LLM-powered FAQ bot. Documents: 30-page product manual (or substitute). Pipeline: chunk → embed → index → query → generate. Evaluate on 25 test Q&As. Report retrieval precision and answer quality. Deploy as a Python function with a clean interface.',
+    resources:[
+      {type:'Library', text:'langchain — pip install langchain (RAG orchestration framework)'},
+      {type:'Library', text:'chromadb — pip install chromadb'},
+      {type:'Library', text:'faiss-cpu — pip install faiss-cpu'},
+      {type:'Article', text:'\"RAG from Scratch\" — LangChain blog'},
+      {type:'Docs', text:'sentence-transformers documentation — sbert.net/docs'}
+    ],
+    dataset:{name:'Technical Documentation Corpus', source:'Synthetic (Python) + Wikipedia excerpts',
+      desc:'50 synthetic technical articles (AI, ML, data engineering topics), each 500-2000 words. 20 test questions with ground-truth answers. Chunking + retrieval benchmark.',
+      code:'import pandas as pd, numpy as np\nnp.random.seed(24)\ntopics=["machine learning pipelines","neural network architectures","SQL window functions","feature engineering","model deployment","data preprocessing","experiment tracking","natural language processing","recommendation systems","time series forecasting"]\nrows=[]\nfor i,topic in enumerate(topics*5):\n    article=f"This article covers {topic}. "+(" ".join([f"The concept of {topic} involves {np.random.choice([\'optimization\',\'validation\',\'preprocessing\',\'evaluation\',\'deployment\'])} techniques. " for _ in range(np.random.randint(10,30))]))\n    rows.append({"doc_id":i,"topic":topic,"text":article})\npd.DataFrame(rows).to_csv("day24_docs.csv",index=False)'},
+    deliverables:['Jupyter notebook: day24_rag_pipeline.ipynb','RAG pipeline module: rag_pipeline.py','Chunk size experiment results table','Answer quality evaluation (20 Q&A pairs with scores)'],
+    readmeQuestions:[
+      'What chunk size gave the best retrieval precision on your test queries?',
+      'How many of your 20 test answers contained hallucinated information not in retrieved chunks?',
+      'What would you change about your chunking strategy for very long legal documents vs short news articles?'
+    ],
+    skillIntegration:['Python','sentence-transformers','FAISS','Chroma','LLM APIs'],
+    successCriteria:[
+      'Full RAG pipeline implemented end-to-end',
+      'Chunk size experiment with at least 4 sizes completed',
+      'Retrieval precision measured on 20 test queries',
+      'Answer quality evaluated with hallucination rate reported'
+    ]
+  },
+  {
+    day:25, phase:'rag', theme:'Retrieval Quality & Reranking', artifact:'text', difficulty:'Advanced',
+    concepts:['BM25 retrieval','hybrid search','cross-encoder reranking','reciprocal rank fusion','RAGAS metrics','MRR@k','hallucination tracing','reranker models'],
+    objectives:[
+      'Implement BM25 sparse retrieval and combine it with dense retrieval using reciprocal rank fusion',
+      'Add a cross-encoder reranker to improve precision of top-k results',
+      'Evaluate retrieval quality using MRR@5 and NDCG@10',
+      'Use RAGAS to measure faithfulness, answer relevancy, and context precision'
+    ],
+    coreConcepts:'BM25 is a probabilistic sparse retrieval algorithm — it counts exact word matches weighted by document length and term frequency, similar to TF-IDF but with better normalization. Dense retrieval (vector search) captures semantic meaning but misses exact terms. Hybrid search combines both: Reciprocal Rank Fusion averages the reciprocal ranks from two ordered result lists, giving a new merged ranking without requiring score normalization. Cross-encoder reranking: given a query + candidate chunk, a model outputs a single relevance score. Unlike bi-encoders (which encode query and chunk separately), cross-encoders compare them jointly — much more accurate but slower. RAGAS (RAG Assessment) evaluates: faithfulness (are answers supported by context?), answer relevancy (does it answer the question?), context precision (how much retrieved context is relevant?). MRR@k: mean of 1/rank where the correct document is found across k queries.',
+    activities:[
+      'Implement BM25 using rank_bm25 library; retrieve top-10 for 20 test queries',
+      'Compare BM25 vs dense retrieval on MRR@5; find query types where each method wins',
+      'Implement Reciprocal Rank Fusion to merge BM25 and dense results; re-evaluate MRR@5',
+      'Add a cross-encoder reranker (ms-marco-MiniLM-L-6-v2) on top of hybrid top-20; measure precision@5 improvement',
+      'Install RAGAS; evaluate your full RAG pipeline on faithfulness and context precision'
+    ],
+    challenge:'Your RAG system currently achieves MRR@5 = 0.61. The business target is 0.80. Systematically try: (1) better embedding model, (2) BM25 hybrid, (3) cross-encoder reranking, (4) improved chunking. Document each intervention\'s impact. Build a table showing MRR@5 at each step. Reach or explain why 0.80 is not achievable with this corpus.',
+    reflection:[
+      'BM25 retrieves "Python programming tutorial" for the query "how to learn coding in Python." Dense retrieval retrieves "beginner\'s guide to software development." Which would you prefer and why?',
+      'Cross-encoder reranking is more accurate than bi-encoder retrieval. Why is it used only as a second stage, not for primary retrieval?',
+      'RAGAS measures faithfulness. A model achieves faithfulness = 1.0 but answer relevancy = 0.4. What does this mean in practice?',
+      'Reciprocal Rank Fusion does not require score normalization. Why is this an advantage over linear combination of scores?',
+      'You have 10 million chunks. Can you use a cross-encoder as your primary retrieval method? What are the latency implications?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Library', text:'rank-bm25 — pip install rank-bm25'},
+      {type:'Library', text:'ragas — pip install ragas (RAG evaluation framework)'},
+      {type:'Model', text:'cross-encoder/ms-marco-MiniLM-L-6-v2 — HuggingFace Hub'},
+      {type:'Paper', text:'\"Reciprocal Rank Fusion Outperforms Condorcet\" — Cormack et al.'},
+      {type:'Article', text:'\"Evaluating RAG Pipelines with RAGAS\" — Towards Data Science'}
+    ],
+    dataset:{name:'Technical Documentation (extended)', source:'day24_docs.csv + 25 annotated Q&As',
+      desc:'Extend Day 24 corpus with 25 annotated question-answer pairs that have ground-truth relevant chunks marked. Required for MRR and RAGAS evaluation.',
+      code:'# Extend day24_docs.csv\nqas=[{"query":"What is feature engineering?","relevant_doc_ids":[0,5,10]},{"query":"How do window functions work in SQL?","relevant_doc_ids":[2,7,12]},{"query":"What is the difference between LSTM and CNN for sequences?","relevant_doc_ids":[1,6,11]}]\nimport json\nwith open("day25_qas.json","w") as f: json.dump(qas,f)'},
+    deliverables:['Jupyter notebook: day25_reranking.ipynb','Retrieval comparison table (BM25 / Dense / Hybrid / Reranked) with MRR@5','RAGAS evaluation report (faithfulness, relevancy, precision)','retrieval_pipeline.py with hybrid search + reranking'],
+    readmeQuestions:[
+      'At which step did MRR@5 improve the most, and what does that tell you about where your RAG system was failing?',
+      'What was the latency cost of adding the cross-encoder reranker?',
+      'If you could only make one improvement to your RAG pipeline, what would it be based on this evaluation?'
+    ],
+    skillIntegration:['Python','sentence-transformers','FAISS','BM25','RAGAS','HuggingFace'],
+    successCriteria:[
+      'BM25 implemented and compared to dense retrieval',
+      'Hybrid search with RRF implemented and MRR measured',
+      'Cross-encoder reranker integrated as second stage',
+      'RAGAS evaluation completed with at least 3 metrics'
+    ]
+  },
+  {
+    day:26, phase:'mlops', theme:'Experiment Tracking & Reproducibility', artifact:'tabular', difficulty:'Intermediate',
+    concepts:['MLflow tracking','run logging','artifact storage','model registry','reproducibility','environment management','random seeds','experiment comparison UI'],
+    objectives:[
+      'Instrument a training run with MLflow to log parameters, metrics, and artifacts',
+      'Use the MLflow UI to compare multiple experiment runs and identify the best model',
+      'Register a model in the MLflow Model Registry and promote it through staging → production',
+      'Understand what "reproducibility" means in ML and what minimum infrastructure it requires'
+    ],
+    coreConcepts:'An experiment you cannot reproduce is an experiment you cannot trust. MLflow tracking logs: parameters (hyperparameters), metrics (AUC, loss per epoch), artifacts (trained model, plots, data samples), and environment info. The MLflow UI visualizes experiment runs, parameter vs metric plots, and artifact trees. The Model Registry is a centralized store with versioning and stage transitions: None → Staging → Production → Archived. Environment management: a model trained in Python 3.9 with scikit-learn 1.2.0 must be run in the same environment at inference time. mlflow.log_artifact() saves any file — model, plot, CSV, notebook. Random seeds: set np.random.seed(), random.seed(), torch.manual_seed() at the start of every training script. mlflow.autolog() automatically logs params and metrics for sklearn, XGBoost, PyTorch.',
+    activities:[
+      'Instrument your Day 12 XGBoost churn model with MLflow; log: n_estimators, max_depth, AUC, precision, recall',
+      'Run 5 experiments with different hyperparameters; compare in the MLflow UI (run mlflow ui)',
+      'Log the confusion matrix as a PNG artifact; log the trained pipeline as a model artifact',
+      'Register the best model in the Model Registry; transition it to "Staging"',
+      'Write a reproducibility checklist: what must be preserved to reproduce an experiment in 6 months?'
+    ],
+    challenge:'Your team has been running experiments for 3 months with no tracking. Retroactively instrument your 5 best models from this roadmap with MLflow. Log all parameters, metrics, and artifacts. Use the MLflow UI to identify which model has the best AUC-to-training-time ratio. Write a 1-page team policy on mandatory experiment logging.',
+    reflection:[
+      'A colleague achieves AUC=0.94 but forgot to log the exact random seed. Is this experiment reproducible? What is the practical impact?',
+      'What is the difference between mlflow.log_param() and mlflow.log_metric()? Give examples of each.',
+      'The MLflow Model Registry has stages: None, Staging, Production, Archived. What process should exist between Staging and Production in a real team?',
+      'MLflow stores artifacts locally by default. What happens to your experiment history if you delete the mlruns/ folder?',
+      'Explain why logging the training data hash (not just the data path) is important for reproducibility.'
+    ],
+    milestone:'Mini-Project 11 (Days 26): Complete experiment tracking audit. Log all previous best models from Days 5, 12, 13, 14, 16 into a single MLflow experiment. Build a comparison table in the UI. Identify the Pareto frontier models (best AUC at various complexity levels).',
+    resources:[
+      {type:'Docs', text:'MLflow documentation — mlflow.org/docs'},
+      {type:'Video', text:'\"MLflow Tutorial\" — Krish Naik, YouTube'},
+      {type:'Article', text:'\"MLOps Basics: Experiment Tracking\" — neptune.ai blog'},
+      {type:'Library', text:'mlflow — pip install mlflow'},
+      {type:'Article', text:'\"Reproducibility in ML\" — Papers With Code (reproducibility challenge)'}
+    ],
+    dataset:{name:'All Previous Datasets (audit)', source:'Days 1–16 experiments',
+      desc:'No new dataset. The task is to retroactively log experiments from previous days into MLflow.',
+      code:'import mlflow\nmlflow.set_experiment("30day_roadmap")\nwith mlflow.start_run(run_name="day12_xgboost_baseline"):\n    mlflow.log_params({"n_estimators":200,"max_depth":6,"learning_rate":0.1})\n    mlflow.log_metrics({"auc":0.89,"precision":0.76,"recall":0.81})\n    mlflow.log_artifact("churn_pipeline.joblib")'},
+    deliverables:['Jupyter notebook: day26_experiment_tracking.ipynb','MLflow UI screenshot showing all runs compared','Model registered in MLflow Registry as "churn_v1"','Reproducibility policy document (Markdown)'],
+    readmeQuestions:[
+      'How many of your previous experiments were fully reproducible from your MLflow logs alone?',
+      'What information was missing from your early experiments that you have now captured?',
+      'What is your team\'s policy for transitioning a model from Staging to Production?'
+    ],
+    skillIntegration:['Python','MLflow','Git','Scikit-learn','XGBoost'],
+    successCriteria:[
+      'At least 5 experiments logged with params and metrics',
+      'MLflow UI shows run comparison with parallel coordinates plot',
+      'Model registered in Registry with version and stage',
+      'Reproducibility checklist covers: seeds, environment, data version, code version'
+    ]
+  },
+  {
+    day:27, phase:'mlops', theme:'Drift Detection & Model Monitoring', artifact:'tabular', difficulty:'Advanced',
+    concepts:['data drift','concept drift','PSI','KS test','Evidently','monitoring in production','alerting heuristics','reference vs current dataset'],
+    objectives:[
+      'Detect data drift using Population Stability Index (PSI) and Kolmogorov-Smirnov test',
+      'Build a drift monitoring report using Evidently AI',
+      'Distinguish between data drift, concept drift, and model drift — and explain what to do about each',
+      'Implement an alerting threshold (PSI > 0.2) that triggers a model retraining flag'
+    ],
+    coreConcepts:'Models degrade silently because the world changes but the model does not. Data drift: the distribution of input features changes (e.g. a new age group of customers appears). Concept drift: the relationship between features and the target changes (e.g. economic recession changes what predicts churn). Model drift: prediction quality degrades — detected by monitoring output metrics, not inputs. PSI (Population Stability Index): measures distribution shift for a single feature. PSI < 0.1: no drift. 0.1–0.2: moderate drift. > 0.2: significant drift, investigate. KS test: a statistical test for whether two samples come from the same distribution. Evidently is an open-source library that generates HTML drift reports covering all features. Monitoring strategy: collect "reference" distribution at training time; compare to "current" distribution weekly/monthly.',
+    activities:[
+      'Load the churn dataset; create a synthetic "drifted" version by shifting age distribution by 10 years',
+      'Compute PSI for all numeric features between reference and drifted datasets',
+      'Run a KS test for all features; identify which features drift significantly (p < 0.05)',
+      'Generate a full Evidently drift report (HTML); identify the 3 most drifted features',
+      'Implement a drift alert function: if any feature PSI > 0.2, return True + list of drifted features'
+    ],
+    challenge:'You deploy a churn model trained on 2022 data. It is now 2024, and a new generation of customers (aged 55–70) has entered your service. Simulate this drift, measure its impact on model AUC, build an Evidently monitoring report, and write an incident response plan: "AUC dropped from 0.89 to 0.71 in 3 weeks — here is what we did."',
+    reflection:[
+      'PSI > 0.2 triggers an alert. Should you immediately retrain the model? What steps should come first?',
+      'Explain why monitoring input features for drift is insufficient to detect concept drift.',
+      'Your model\'s AUC drops from 0.87 to 0.81 over 6 months. Is this data drift, concept drift, or both? How would you diagnose which?',
+      'What is the "reference dataset" in production monitoring, and how do you choose it?',
+      'You monitor 50 features with KS tests at α=0.05. How many false positive drift alerts do you expect by chance alone? What does this suggest?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Library', text:'evidently — pip install evidently (evidentlyai.com)'},
+      {type:'Article', text:'\"How to Monitor ML Models in Production\" — neptune.ai'},
+      {type:'Paper', text:'\"Failing Loudly: An Empirical Study of Methods for Detecting Dataset Shift\" — Rabanser et al.'},
+      {type:'Video', text:'\"ML Monitoring with Evidently\" — Evidently AI YouTube channel'},
+      {type:'Docs', text:'Population Stability Index — explained with examples'}
+    ],
+    dataset:{name:'Churn Dataset (Drifted Version)', source:'day12_telco_churn.csv + synthetic drift',
+      desc:'Take Day 12 churn dataset as "reference." Generate 3 "current" versions: mild drift (PSI 0.08), moderate drift (PSI 0.15), severe drift (PSI 0.35) by shifting feature distributions.',
+      code:'import pandas as pd, numpy as np\ndf=pd.read_csv("day12_telco_churn.csv")\ndef apply_drift(df, age_shift=0, income_scale=1.0, seed=42):\n    drifted=df.copy()\n    np.random.seed(seed)\n    if "tenure" in drifted.columns:\n        drifted["tenure"]=np.clip(drifted["tenure"]+age_shift+np.random.normal(0,2,len(drifted)),1,72)\n    return drifted\ndf_mild=apply_drift(df,age_shift=2)\ndf_moderate=apply_drift(df,age_shift=8)\ndf_severe=apply_drift(df,age_shift=18)\ndf_mild.to_csv("day27_mild_drift.csv",index=False)\ndf_severe.to_csv("day27_severe_drift.csv",index=False)'},
+    deliverables:['Jupyter notebook: day27_drift_detection.ipynb','Evidently HTML drift report','PSI table (feature × drift level)','drift_monitor.py: reusable drift alert function','Incident response plan (Markdown)'],
+    readmeQuestions:[
+      'At what drift level did model AUC drop below an acceptable threshold?',
+      'Which feature drifted most severely, and what real-world event could cause this?',
+      'How often would you run your drift monitor in production, and what would trigger a retraining job?'
+    ],
+    skillIntegration:['Python','Evidently','Pandas','Scikit-learn','MLflow'],
+    successCriteria:[
+      'PSI computed for all features across 3 drift levels',
+      'KS test implemented and interpreted correctly',
+      'Evidently HTML report generated with at least 5 features',
+      'Drift alert function tested and working'
+    ]
+  },
+  {
+    day:28, phase:'mlops', theme:'Deployment with FastAPI & Docker', artifact:'api', difficulty:'Advanced',
+    concepts:['model serving REST API','online vs batch inference','FastAPI for ML','request validation','Pydantic schemas','Dockerization','training-serving skew','health checks','swagger UI'],
+    objectives:[
+      'Wrap a trained sklearn pipeline in a FastAPI endpoint with full request/response validation',
+      'Build a Docker image for your ML service and run it locally',
+      'Identify and fix a training-serving skew issue in your own pipeline',
+      'Test your API with integration tests and document it with Swagger'
+    ],
+    coreConcepts:'A model not in production is not a model. FastAPI is an async Python web framework that auto-generates OpenAPI/Swagger documentation and handles request validation via Pydantic. Route: @app.post("/predict") receives a JSON body, validates it against your PredictionRequest schema, calls pipeline.predict(), returns a PredictionResponse. Training-serving skew: any difference between how you process data during training vs inference. Classic example: you log-transform income in training but forget to do so in the API. The Pipeline (Day 13) prevents this. Docker: a container that bundles your Python version, dependencies, and application code into a portable image. Dockerfile: FROM python:3.11-slim → COPY requirements.txt → RUN pip install → COPY app/ → CMD ["uvicorn", "main:app"]. Health check endpoint (/health) returns 200 OK so orchestrators know the service is alive.',
+    activities:[
+      'Load your serialized churn pipeline (Day 13); wrap it in a FastAPI app with /predict and /health endpoints',
+      'Define Pydantic schemas for PredictionRequest and PredictionResponse; test with the Swagger UI',
+      'Write a Dockerfile; build the image (docker build -t churn-api .); run it (docker run -p 8000:8000 churn-api)',
+      'Send 100 test predictions via requests library; verify predictions match the pipeline directly',
+      'Identify a training-serving skew in your pipeline: introduce one deliberately, show the impact, fix it'
+    ],
+    challenge:'Deploy a production-grade churn prediction API with: (1) /predict endpoint with input validation, (2) /health endpoint, (3) /metrics endpoint returning prediction count, avg probability, and class distribution, (4) logging every prediction to a CSV file, (5) Docker image under 500MB. Write an integration test suite that tests all 3 endpoints.',
+    reflection:[
+      'What is training-serving skew? Give 3 concrete examples that could occur in your churn pipeline.',
+      'Why should you validate prediction inputs at the API level even though your pipeline handles raw data?',
+      'A Docker container restarts and loses the prediction log CSV. What does this tell you about container state management?',
+      'Your API receives a feature value of -999 (sentinel for missing). Your pipeline was trained with NaN. What breaks, and how do you fix it?',
+      'Explain the difference between online inference (request/response API) and batch inference (scheduled job). When would you use each?'
+    ],
+    milestone:'Mini-Project 12 (Days 26–28): End-to-end ML deployment. Train model → log in MLflow → register → serialize → wrap in FastAPI → containerize with Docker → integration test. This is the core of the capstone capstone pipeline.',
+    resources:[
+      {type:'Docs', text:'FastAPI documentation — fastapi.tiangolo.com (excellent, with examples)'},
+      {type:'Docs', text:'Docker Getting Started — docs.docker.com/get-started'},
+      {type:'Video', text:'\"Deploy ML Model with FastAPI\" — Krish Naik, YouTube'},
+      {type:'Article', text:'\"Training-Serving Skew in ML Systems\" — Google MLOps guide'},
+      {type:'Article', text:'\"Dockerizing a Machine Learning API\" — Towards Data Science'}
+    ],
+    dataset:{name:'Churn API Test Suite', source:'day12_telco_churn.csv (test split)',
+      desc:'Use 200 held-out rows from the churn dataset as the integration test payload. JSON-serialize each row and send as API requests.',
+      code:'import pandas as pd, json\ndf=pd.read_csv("day12_telco_churn.csv").drop(columns=["churn"])\ntest_samples=df.sample(200,random_state=99).to_dict(orient="records")\nwith open("day28_test_payloads.json","w") as f:\n    json.dump(test_samples,f)'},
+    deliverables:['FastAPI app: main.py with /predict, /health, /metrics','Dockerfile and requirements.txt','Integration test suite: test_api.py','README: how to build, run, and test the Docker container','Swagger UI screenshot'],
+    readmeQuestions:[
+      'What training-serving skew did you find (or deliberately introduce), and how did you fix it?',
+      'What is the Docker image size, and what steps reduced it?',
+      'How long does a single prediction request take end-to-end (from HTTP request to response)?'
+    ],
+    skillIntegration:['Python','FastAPI','Docker','Pydantic','Scikit-learn','Git'],
+    successCriteria:[
+      'Docker image builds and runs without errors',
+      'All 200 test payloads return valid predictions',
+      '/health endpoint returns 200 OK',
+      'Swagger UI accessible at /docs',
+      'Integration tests pass'
+    ]
+  },
+  {
+    day:29, phase:'rl', theme:'Reinforcement Learning Fundamentals', artifact:'rl-env', difficulty:'Advanced',
+    concepts:['agent/environment/state/action/reward','Markov Decision Process','Q-learning','epsilon-greedy exploration','policy vs value function','Q-table','OpenAI Gym','episode/timestep'],
+    objectives:[
+      'Implement Q-learning from scratch for a grid-world environment',
+      'Understand the exploration-exploitation tradeoff and implement epsilon decay',
+      'Plot reward per episode and observe learning convergence',
+      'Explain the Bellman equation and what it is computing'
+    ],
+    coreConcepts:'RL frames problems as an agent interacting with an environment to maximize cumulative reward. The Markov Decision Process (MDP) formalizes this: states S, actions A, transition function P(s\'|s,a), reward function R(s,a,s\'). Q-learning estimates Q(s,a): the expected cumulative discounted reward when taking action a in state s and following the optimal policy thereafter. Bellman equation: Q(s,a) = r + γ × max_a\'[Q(s\',a\')] — the value of an action equals the immediate reward plus discounted future value. The Q-table stores Q(s,a) for all state-action pairs. Epsilon-greedy: with probability ε explore randomly; with probability 1-ε exploit the best known action. Epsilon decays over time as the agent learns more. Discount factor γ ∈ (0,1): controls how much future rewards matter (γ close to 1 = patient agent). OpenAI Gym provides standardized environments for RL experiments.',
+    activities:[
+      'Build a 5×5 grid world environment from scratch in Python (states, actions, reward function)',
+      'Implement a Q-table and the Q-learning update rule; train for 1000 episodes',
+      'Implement epsilon-greedy with epsilon decay from 1.0 to 0.05 over 800 episodes',
+      'Plot: (1) total reward per episode, (2) epsilon vs episode, (3) Q-table heatmap after training',
+      'Install Gym; run CartPole-v1 with random policy vs trained Q-learning; compare episode rewards'
+    ],
+    challenge:'Train a Q-learning agent to solve FrozenLake-v1 (Gym). The environment is stochastic: actions succeed only 33% of the time. With a deterministic environment you need ~500 episodes. Stochastic requires more. Tune learning rate, gamma, and epsilon decay to achieve an average reward > 0.75 over 100 test episodes. Document what tuning helped most.',
+    reflection:[
+      'Why does Q-learning converge even though the agent explores randomly at first? What mathematical property guarantees this?',
+      'If γ = 0, the agent only cares about immediate reward. What type of behavior does this lead to?',
+      'Epsilon decays from 1 to 0.05. What happens after epsilon reaches 0.05 — does the agent stop learning?',
+      'The Q-table has |S| × |A| entries. Why does Q-learning fail for environments with millions of states (like Atari)?',
+      'Explain the connection between Q-learning and the Bellman optimality equation. What assumption does Q-learning make about the next state?'
+    ],
+    milestone:'',
+    resources:[
+      {type:'Library', text:'gymnasium — pip install gymnasium (successor to OpenAI Gym)'},
+      {type:'Article', text:'\"A Beginners Guide to Q-Learning\" — Towards Data Science'},
+      {type:'Video', text:'\"Reinforcement Learning\" — David Silver RL Course, DeepMind (YouTube)'},
+      {type:'Article', text:'\"Simple RL in Python\" — sentdex tutorial series'},
+      {type:'Book', text:'Reinforcement Learning: An Introduction — Sutton & Barto (free PDF)'}
+    ],
+    dataset:{name:'Grid World + FrozenLake Environment', source:'Custom + OpenAI Gymnasium',
+      desc:'Custom 5×5 grid world (Python class). FrozenLake-v1 from Gymnasium. RL environments are their own "dataset" — generated by agent-environment interaction.',
+      code:'import numpy as np\nclass GridWorld:\n    def __init__(self, size=5):\n        self.size=size\n        self.state=(0,0)\n        self.goal=(4,4)\n        self.obstacles={(1,1),(2,3),(3,2)}\n    def reset(self):\n        self.state=(0,0)\n        return self.state\n    def step(self,action):\n        r,c=self.state\n        dr,dc=[(-1,0),(1,0),(0,-1),(0,1)][action]\n        nr,nc=max(0,min(self.size-1,r+dr)),max(0,min(self.size-1,c+dc))\n        if (nr,nc) in self.obstacles: nr,nc=r,c\n        self.state=(nr,nc)\n        done=self.state==self.goal\n        reward=1.0 if done else -0.01\n        return self.state,reward,done'},
+    deliverables:['Jupyter notebook: day29_q_learning.ipynb','GridWorld class: gridworld.py','Training curves (reward + epsilon vs episodes)','Q-table heatmap visualization','FrozenLake results: random vs trained agent comparison'],
+    readmeQuestions:[
+      'How many episodes did the agent need before consistently reaching the goal?',
+      'Which hyperparameter (learning rate, gamma, epsilon decay) had the most impact on convergence?',
+      'Why does the stochastic FrozenLake require more episodes than the deterministic grid world?'
+    ],
+    skillIntegration:['Python','NumPy','Matplotlib','Gymnasium'],
+    successCriteria:[
+      'Q-learning implemented from scratch and converges on grid world',
+      'Epsilon-greedy with decay implemented',
+      'Training curves clearly show learning progress',
+      'FrozenLake agent achieves > 0.6 average reward'
+    ]
+  },
+  {
+    day:30, phase:'rl', theme:'Contextual Bandits & Capstone Integration', artifact:'rl-env', difficulty:'Advanced',
+    concepts:['contextual bandits','multi-armed bandit','Thompson sampling','UCB','regret minimization','A/B vs bandit','online learning','capstone project integration','portfolio review'],
+    objectives:[
+      'Implement a contextual bandit for ad budget allocation and compare it to a static model',
+      'Explain the difference between full RL and contextual bandits and when each is appropriate',
+      'Identify gaps in your current skill portfolio and plan post-roadmap learning',
+      'Begin the capstone project integration plan with a clear architecture diagram'
+    ],
+    coreConcepts:'Contextual bandits are the practical bridge between classical ML and full RL. In a bandit problem, the agent picks one action at each timestep and receives a reward — but it does not need to plan ahead across multiple steps. Contextual bandits: the agent sees a context (user features) before choosing an arm (ad, recommendation, price). Thompson Sampling: maintain a Beta(α, β) distribution per arm; sample from it; pick the arm with highest sample. Update: increment α on success, β on failure. UCB (Upper Confidence Bound): pick the arm with the highest upper confidence interval — prefer uncertain arms to balance exploration. Regret = optimal reward - actual reward accumulated over time. Bandits converge faster than full RL because rewards are immediate. A/B testing vs bandits: A/B testing assigns fixed traffic splits; bandits dynamically shift traffic toward better-performing arms — reducing the cost of exploration.',
+    activities:[
+      'Implement a 5-arm bandit with Thompson Sampling for ad channel allocation; simulate 2000 steps',
+      'Implement a contextual bandit: features are user demographics; actions are 3 product recommendations',
+      'Compare Thompson Sampling vs UCB vs random policy on cumulative regret over 1000 rounds',
+      'Compare contextual bandit vs a static logistic regression model on the same recommendation task',
+      'Begin capstone project: define the problem, dataset, and architecture; write project plan in README'
+    ],
+    challenge:'Final Integration Challenge: Combine what you have built throughout the roadmap. Select any one of your trained models (churn, fraud, credit). Ensure it is: (1) logged in MLflow, (2) wrapped in a FastAPI endpoint, (3) Dockerized, (4) monitored for drift (Evidently), (5) explained with SHAP. Document the complete production stack in a README with an architecture diagram. This is your capstone launch pad.',
+    reflection:[
+      'Explain the difference between exploration and exploitation. Why is pure exploitation from day one a bad strategy?',
+      'A contextual bandit updates in real time. What risk does this introduce that a batch-trained static model does not have?',
+      'Thompson Sampling treats each arm\'s reward probability as a Beta distribution. What does the width of this distribution represent?',
+      'Looking back at 30 days: which concept was hardest to grasp, and what finally made it click?',
+      'If you were to start this roadmap again, what would you change about the order of topics? Why?'
+    ],
+    milestone:'CAPSTONE PROJECT LAUNCH: You now have all components to build the full capstone. The capstone integrates: (1) SQL feature engineering (Days 8–10), (2) ML pipeline with sklearn (Day 13), (3) Experiment tracking with MLflow (Day 26), (4) SHAP explainability (Day 16), (5) FastAPI + Docker deployment (Day 28), (6) Drift monitoring with Evidently (Day 27), (7) Power BI dashboard (Day 10). Estimated time: 2 weeks beyond Day 30. See capstone spec in project README.',
+    resources:[
+      {type:'Article', text:'\"Introduction to Contextual Bandits\" — Towards Data Science'},
+      {type:'Paper', text:'\"A Tutorial on Thompson Sampling\" — Russo et al. (2018)'},
+      {type:'Video', text:'\"Bandit Algorithms\" — CS234 Stanford RL course (YouTube)'},
+      {type:'Article', text:'\"From A/B Testing to Bandits\" — VWO blog'},
+      {type:'Repo', text:'Vowpal Wabbit — industrial-grade contextual bandit library (github.com/VowpalWabbit)'}
+    ],
+    dataset:{name:'Ad Allocation Simulation', source:'Synthetic (Python)',
+      desc:'Simulated ad campaign: 5 channels (Google, Facebook, Email, Display, Influencer), each with a hidden true CTR. Agent must discover best allocation through exploration. 2000 simulation steps.',
+      code:'import numpy as np\nnp.random.seed(30)\ntrue_ctrs=[0.05,0.12,0.08,0.03,0.09]\nclass AdBandit:\n    def __init__(self):\n        self.alphas=[1]*5\n        self.betas=[1]*5\n    def select_arm(self):\n        samples=[np.random.beta(a,b) for a,b in zip(self.alphas,self.betas)]\n        return np.argmax(samples)\n    def update(self,arm,reward):\n        if reward: self.alphas[arm]+=1\n        else: self.betas[arm]+=1\nbandit=AdBandit()\nhistory=[]\nfor t in range(2000):\n    arm=bandit.select_arm()\n    reward=int(np.random.rand()<true_ctrs[arm])\n    bandit.update(arm,reward)\n    history.append({"t":t,"arm":arm,"reward":reward})\nimport pandas as pd\npd.DataFrame(history).to_csv("day30_bandit.csv",index=False)'},
+    deliverables:['Jupyter notebook: day30_bandits_capstone.ipynb','Thompson Sampling vs UCB cumulative regret plot','Contextual bandit vs static model comparison table','Capstone project README with architecture diagram','30-day portfolio summary (Markdown)'],
+    readmeQuestions:[
+      'After 2000 rounds, how close did Thompson Sampling get to always selecting the best arm?',
+      'For your specific domain (recommendation, pricing, etc.), would you use a bandit or a static model? Why?',
+      'Looking at your 30-day portfolio, which 3 projects are you most proud of and why?',
+      'What is your next learning goal after this roadmap, and what specific projects will you build?'
+    ],
+    skillIntegration:['Python','NumPy','Pandas','FastAPI','Docker','MLflow','SHAP','Evidently','Power BI','SQL'],
+    successCriteria:[
+      'Thompson Sampling and UCB both implemented and compared on regret',
+      'Contextual bandit beats random policy on cumulative reward',
+      'Capstone README has complete architecture diagram',
+      '30-day portfolio summary written with reflection on learning journey',
+      'At least one end-to-end production ML stack component verified working'
+    ]
+  }
+];
+
+const PHASE_LABELS_FULL = {
+  'prod-ml':'Production ML','classical':'Classical ML','sql':'SQL / Data eng',
+  'deep':'Deep learning','nlp':'NLP','llm':'Transformers / LLMs',
+  'rag':'RAG','rl':'RL','mlops':'MLOps'
+};
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function makeList(items, cls, fn){
+  return `<ul class="${cls}">${items.map(fn).join('')}</ul>`;
+}
+
+function renderCard(d){
+  const pc = PHASE_COLORS[d.phase];
+  const ac = ARTIFACT_COLORS[d.artifact] || {bg:'var(--tag-bg)',color:'var(--text-muted)'};
+  const phasePct = Math.round((d.day/30)*100);
+
+  const hasMilestone = d.milestone && d.milestone.length > 0;
+
+  const inner = `
+    <div class="card-header">
+      <span class="day-num">Day ${d.day}</span>
+      <div style="flex:1">
+        <div class="card-title">${escHtml(d.theme)}</div>
+        <div class="badges">
+          <span class="phase-badge" style="background:${pc.bg};color:${pc.color}">${PHASE_LABELS[d.phase]}</span>
+          <span class="artifact-badge" style="background:${ac.bg};color:${ac.color}">${ARTIFACT_LABELS[d.artifact]||d.artifact}</span>
+          <span class="diff-badge">${escHtml(d.difficulty||'')}</span>
+        </div>
+      </div>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="tags">${d.concepts.map(c=>`<span class="tag">${escHtml(c)}</span>`).join('')}</div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:${phasePct}%"></div></div>
+    </div>
+
+    <div class="details">
+
+      <div class="section-block">
+        <div class="section-label">Learning Objectives</div>
+        ${makeList(d.objectives,'objectives-list',o=>`<li>${escHtml(o)}</li>`)}
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">Core Concepts</div>
+        <div class="section-body">${escHtml(d.coreConcepts)}</div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">Hands-on Activities</div>
+        ${makeList(d.activities,'steps-list',a=>`<li>${escHtml(a)}</li>`)}
+      </div>
+
+      <div class="section-block">
+        <div class="challenge-box">
+          <strong>Daily Challenge</strong>
+          ${escHtml(d.challenge)}
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">Reflection Questions</div>
+        ${makeList(d.reflection,'reflection-list',r=>`<li>${escHtml(r)}</li>`)}
+      </div>
+
+      ${hasMilestone ? `<div class="section-block">
+        <div class="milestone-box">
+          <strong>Project Milestone</strong>
+          ${escHtml(d.milestone)}
+        </div>
+      </div>` : ''}
+
+      <div class="section-block">
+        <div class="section-label">Resources</div>
+        <div class="resources-list">${d.resources.map(r=>`
+          <div class="resource-item">
+            <span class="resource-type">${escHtml(r.type)}</span>
+            <span>${escHtml(r.text)}</span>
+          </div>`).join('')}</div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">Dataset</div>
+        <div class="dataset-box">
+          <div class="ds-name">${escHtml(d.dataset.name)}</div>
+          <div class="ds-source">Source: ${escHtml(d.dataset.source)}</div>
+          <div class="ds-desc">${escHtml(d.dataset.desc)}</div>
+          <div class="code-note">${escHtml(d.dataset.code)}</div>
+        </div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">Deliverables</div>
+        <div class="deliverables-list">${d.deliverables.map(del=>`
+          <div class="deliverable-item">${escHtml(del)}</div>`).join('')}</div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">README Questions</div>
+        ${makeList(d.readmeQuestions,'readme-list',q=>`<li>${escHtml(q)}</li>`)}
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">Skill Integration</div>
+        <div class="skill-integration">${d.skillIntegration.map(s=>`<span class="skill-pill">${escHtml(s)}</span>`).join('')}</div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-label">Success Criteria</div>
+        <div class="success-criteria">${d.successCriteria.map(c=>`<div class="criteria-item">${escHtml(c)}</div>`).join('')}</div>
+      </div>
+
+    </div>
+  `;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = inner;
+  card.addEventListener('click', ()=>card.classList.toggle('expanded'));
+  return card;
+}
+
+function renderCards(filter){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  days.forEach(d=>{
+    if(filter !== 'all' && d.phase !== filter) return;
+    grid.appendChild(renderCard(d));
+  });
+}
+
+document.getElementById('filters').addEventListener('click', e=>{
+  const btn = e.target.closest('.pill');
+  if(!btn) return;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(btn.dataset.filter);
+});
+
+renderCards('all');
+</script>
+</body>
+</html>
